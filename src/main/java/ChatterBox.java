@@ -2,32 +2,39 @@ import java.util.Scanner;
 
 public class ChatterBox {
 
+    private static String name = "\nChatterBox: ";
+
     private static void greetUser() {
-        String startPhrase = "\nChatterBox: Hello! I'm ChatterBox\nChatterBox: What can I do for you?";
+        String startPhrase = name + "Hello! I'm ChatterBox\nChatterBox: What can I do for you?";
         System.out.println(startPhrase);
     }
 
     private static void exit() {
-        String endPhrase = "\nChatterBox: Bye. Hope to see you again soon!";
+        String endPhrase = name + "Bye. Hope to see you again soon!";
         System.out.println(endPhrase);
+    }
+
+    private static void processUserInput(String userInput) {
+        System.out.print(name);
+        System.out.println(userInput);
     }
 
     private static void run() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            String command = scanner.nextLine();
+            String userInput = scanner.nextLine();
 
-            if (command.equals("bye")) {
+            if (userInput.equals("bye")) {
                 break;
             }
 
-            System.out.println("\nChatterBox: " + command);
+            processUserInput(userInput);
         }
 
         scanner.close();
     }
-    
+
     public static void main(String[] args) {
         greetUser();
 
