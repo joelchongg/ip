@@ -1,0 +1,24 @@
+import java.util.ArrayList;
+
+public class Storage<T> {
+
+    private ArrayList<T> storage;
+
+    public Storage() {
+        this.storage = new ArrayList<>();
+    }
+
+    public void displayItems() {
+        for (int index = 1; index <= storage.size(); ++index) {
+            System.out.println(index + ". " + this.storage.get(index - 1));
+        }
+    }
+
+    public boolean addItem(T item) {
+        return this.storage.add(item);
+    }
+
+    public boolean removeItem(T item) {
+        return this.storage.remove(item);
+    }
+}
