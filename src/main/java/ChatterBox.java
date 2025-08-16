@@ -12,8 +12,26 @@ public class ChatterBox {
         System.out.println(endPhrase);
     }
 
+    private static void run() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            String command = scanner.nextLine();
+
+            if (command.equals("bye")) {
+                break;
+            }
+
+            System.out.println("\nChatterBox: " + command);
+        }
+
+        scanner.close();
+    }
+    
     public static void main(String[] args) {
         greetUser();
+
+        run();
 
         exit();
     }
