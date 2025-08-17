@@ -58,39 +58,48 @@ public class CommandProcessor {
     }
 
     private static void addTodo(Storage<Task> storage, Scanner scanner) {
-        String description = scanner.nextLine().trim();
-        Task newTask = new TodoTask(description);
-
-        storage.addItem(newTask);
-        System.out.println(name + "Got it. I've added this task:");
-        System.out.println(newTask);
-        System.out.println(name + "You now have " + storage.size() + " tasks in the list.");
+        String token = scanner.nextLine().trim();
+        Task newTask = new TodoTask(token);
+        addTask(storage, newTask);
     }
 
     private static void addDeadline(Storage<Task> storage, Scanner scanner) {
-        String input = scanner.nextLine().trim();       //TODO
-        String[] description = input.split(" /by ");    //TODO find a better way
-        System.out.println(input);
-        Task newTask = new DeadlineTask(description[0], description[1]);
+        String input = scanner.nextLine().trim();
+        String[] tokens = parseInput(input, " /by ");
 
-        storage.addItem(newTask);
-        System.out.println(name + "Got it. I've added this task:");
-        System.out.println(newTask);
-        System.out.println(name + "You now have " + storage.size() + " tasks in the list.");
+        Task newTask = new DeadlineTask(tokens[0], tokens[1]);
+        addTask(storage, newTask);
     }
     
     private static void addEvent(Storage<Task> storage, Scanner scanner) {
-        String input = scanner.nextLine().trim();       //TODO find a better way
-        String[] description = input.split(" /from ");       //TODO
-        String fromAndTo = description[1];
-        String[] time = fromAndTo.split(" /to ");
+        String input = scanner.nextLine().trim();
+        String[] tokens = parseInput(input, " /from ", " /to ");
 
+        Task newTask = new EventTask(tokens[0], tokens[0], tokens[1]);
+        addTask(storage, newTask);
+    }
 
-        Task newTask = new EventTask(description[0], time[0], time[1]);
+    private static String[] parseInput(String input, String... delimiters) {
+        String[] parts = new String[delimiters.length + 1];
+        int lastIndex = 0;
+        for (int i = 0; i < delimiters.length; ++i) {
+            int idx = input.indexOf(delimiters[i], lastIndex);
+            if (idx == -1) {
+                throw new IllegalArgumentException("Missing Delimiter: " + delimiters[i]);
+            }
 
-        storage.addItem(newTask);
+            parts[i] = input.substring(lastIndex, idx).trim();
+            lastIndex = idx + delimiters[i].length();
+        }
+        parts[delimiters.length] = input.substring(lastIndex).trim();
+
+        return parts;
+    }
+
+    private static void addTask(Storage<Task> storage, Task task) {
+        storage.addItem(task);
         System.out.println(name + "Got it. I've added this task:");
-        System.out.println(newTask);
+        System.out.println(task);
         System.out.println(name + "You now have " + storage.size() + " tasks in the list.");
     }
 }
