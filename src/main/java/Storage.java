@@ -10,8 +10,9 @@ public class Storage<T extends Task> {
 
     public void displayItems() {
         for (int index = 1; index <= storage.size(); ++index) {
-            System.out.println(index + ". " + this.storage.get(index - 1));
+            System.out.println(index + "." + this.storage.get(index - 1));
         }
+        System.out.println();
     }
 
     public boolean addItem(T item) {

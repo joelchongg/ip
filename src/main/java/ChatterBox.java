@@ -20,6 +20,11 @@ public class ChatterBox {
 
         while (true) {
             System.out.print("Enter Input: ");
+            
+            if (!scanner.hasNext()) {
+                break;    
+            }
+
             String userInput = scanner.next();
 
             if (userInput.equals("bye")) {
@@ -27,7 +32,7 @@ public class ChatterBox {
             }
 
             if (!CommandProcessor.isCommand(userInput)) {
-                System.out.println("Invalid command!");
+                System.out.println(name + "Invalid command!");
                 continue;
             }
 

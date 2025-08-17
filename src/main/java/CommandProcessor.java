@@ -75,7 +75,7 @@ public class CommandProcessor {
         String input = scanner.nextLine().trim();
         String[] tokens = parseInput(input, " /from ", " /to ");
 
-        Task newTask = new EventTask(tokens[0], tokens[0], tokens[1]);
+        Task newTask = new EventTask(tokens[0], tokens[1], tokens[2]);
         addTask(storage, newTask);
     }
 
