@@ -15,31 +15,27 @@ public class ChatterBox {
         System.out.println(endPhrase);
     }
 
-    private static void processUserInput(String userInput) {
-        System.out.print(name);
-
-        if (userInput.equals("list")) {
-            System.out.println("Here are the tasks in your list:");
-            storage.displayItems();
-        } else {
-            Task newTask = new Task(userInput);
-            storage.addItem(newTask);
-            System.out.println("added: " + userInput);
-        }
-    }
-
     private static void run() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.print("Enter Input: ");
-            String userInput = scanner.nextLine();
+            String userInput = scanner.next();
 
             if (userInput.equals("bye")) {
                 break;
             }
 
-            processUserInput(userInput);
+            // Current code for adding items to storage. Modify eventually when "add" command exists
+            if (!CommandProcessor.isCommand(userInput)) {
+                userInput += scanner.nextLine();        
+                Task newTask = new Task(userInput);
+                storage.addItem(newTask);
+                System.out.println(name + "added: " + userInput);
+                continue;
+            }
+
+            CommandProcessor.processCommand(storage, scanner, userInput);
         }
 
         scanner.close();

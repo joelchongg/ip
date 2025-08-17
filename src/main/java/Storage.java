@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Storage<T> {
+public class Storage<T extends Task> {
 
     private ArrayList<T> storage;
 
@@ -20,5 +20,9 @@ public class Storage<T> {
 
     public boolean removeItem(T item) {
         return this.storage.remove(item);
+    }
+
+    public T getItem(int index) {
+        return this.storage.get(index);
     }
 }
