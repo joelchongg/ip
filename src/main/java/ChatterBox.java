@@ -3,10 +3,10 @@ import java.util.Scanner;
 public class ChatterBox {
 
     private static String name = "\nChatterBox: ";
-    private static Storage<String> storage = new Storage<>();
+    private static Storage<Task> storage = new Storage<>();
 
     private static void greetUser() {
-        String startPhrase = name + "Hello! I'm ChatterBox\nChatterBox: What can I do for you?";
+        String startPhrase = name + "Hello! I'm ChatterBox." + name + "What can I do for you?";
         System.out.println(startPhrase);
     }
 
@@ -17,11 +17,13 @@ public class ChatterBox {
 
     private static void processUserInput(String userInput) {
         System.out.print(name);
+
         if (userInput.equals("list")) {
-            System.out.println();
+            System.out.println("Here are the tasks in your list:");
             storage.displayItems();
         } else {
-            storage.addItem(userInput);
+            Task newTask = new Task(userInput);
+            storage.addItem(newTask);
             System.out.println("added: " + userInput);
         }
     }
@@ -30,6 +32,7 @@ public class ChatterBox {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+            System.out.print("Enter Input: ");
             String userInput = scanner.nextLine();
 
             if (userInput.equals("bye")) {
