@@ -10,9 +10,12 @@ public class CommandProcessor {
         commands.put("list", CommandProcessor::list);
         commands.put("mark", CommandProcessor::mark);
         commands.put("unmark", CommandProcessor::unmark);
+        commands.put("todo", CommandProcessor::addTodo);
+        commands.put("deadline", CommandProcessor::addDeadline);
+        commands.put("event", CommandProcessor::addEvent);
     }
 
-    public static <T extends Task> void processCommand(Storage<T> storage, Scanner scanner, String command) {
+    public static void processCommand(Storage<Task> storage, Scanner scanner, String command) {
         if (isCommand(command)) {
             Runnable cmd = commands.get(command);
             cmd.run(storage, scanner);
@@ -25,15 +28,15 @@ public class CommandProcessor {
         return commands.containsKey(command);
     }
 
-    private static <T extends Task> void list(Storage<T> storage, Scanner scanner) {
+    private static void list(Storage<Task> storage, Scanner scanner) {
         System.out.println(name + "Here are the tasks in your list:");
         storage.displayItems();
     }
 
-    private static <T extends Task> void mark(Storage<T> storage, Scanner scanner) {
+    private static void mark(Storage<Task> storage, Scanner scanner) {
         try {
             int index = scanner.nextInt();
-            T item = storage.getItem(index - 1);
+            Task item = storage.getItem(index - 1);
             item.setCompleted();
             System.out.println(name + "Nice! I've marked this task as done:");
             System.out.println(item);
@@ -42,15 +45,27 @@ public class CommandProcessor {
         }
     }
 
-    private static <T extends Task> void unmark(Storage<T> storage, Scanner scanner) {
+    private static void unmark(Storage<Task> storage, Scanner scanner) {
         try {
             int index = scanner.nextInt();
-            T item = storage.getItem(index - 1);
+            Task item = storage.getItem(index - 1);
             item.setIncomplete();
             System.out.println(name + "OK, I've marked this task as not done yet:");
             System.out.println(item);
         } catch (InputMismatchException e) {
             System.out.println(name + "Invalid input for unmark!");
         }
+    }
+
+    private static void addTodo(Storage<Task> storage, Scanner scanner) {
+        //TODO
+    }
+
+    private static <T extends Task> void addDeadline(Storage<T> storage, Scanner scanner) {
+        //TODO
+    }
+    
+    private static <T extends Task> void addEvent(Storage<T> storage, Scanner scanner) {
+        //TODO
     }
 }

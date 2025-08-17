@@ -26,12 +26,8 @@ public class ChatterBox {
                 break;
             }
 
-            // Current code for adding items to storage. Modify eventually when "add" command exists
             if (!CommandProcessor.isCommand(userInput)) {
-                userInput += scanner.nextLine();        
-                Task newTask = new Task(userInput);
-                storage.addItem(newTask);
-                System.out.println(name + "added: " + userInput);
+                System.out.println("Invalid command!");
                 continue;
             }
 
