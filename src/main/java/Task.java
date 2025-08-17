@@ -1,10 +1,12 @@
-public class Task {
+public abstract class Task {
     private String description;
     private boolean completed;
+    private char symbol;
 
-    public Task(String description) {
+    public Task(String description, char symbol) {
         this.description = description;
         this.completed = false;
+        this.symbol = symbol;
     }
 
     public boolean isCompleted() {
@@ -27,9 +29,13 @@ public class Task {
         return (this.completed ? "X" : " ");
     }
 
+    public char getTaskSymbol() {
+        return this.symbol;
+    }
+
     @Override
     public String toString() {
-        String completionStatus = "[" + getStatusIcon() + "]"; 
-        return completionStatus + " " + this.description;
+        String status = "[" + getTaskSymbol() + "] [" + getStatusIcon() + "]";
+        return status + " " + this.description;
     }
 }
