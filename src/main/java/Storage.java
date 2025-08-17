@@ -25,4 +25,8 @@ public class Storage<T extends Task> {
     public T getItem(int index) {
         return this.storage.get(index);
     }
+
+    public int size() {
+        return this.storage.size();
+    }
 }

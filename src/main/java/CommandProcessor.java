@@ -58,14 +58,39 @@ public class CommandProcessor {
     }
 
     private static void addTodo(Storage<Task> storage, Scanner scanner) {
-        //TODO
+        String description = scanner.nextLine().trim();
+        Task newTask = new TodoTask(description);
+
+        storage.addItem(newTask);
+        System.out.println(name + "Got it. I've added this task:");
+        System.out.println(newTask);
+        System.out.println(name + "You now have " + storage.size() + " tasks in the list.");
     }
 
-    private static <T extends Task> void addDeadline(Storage<T> storage, Scanner scanner) {
-        //TODO
+    private static void addDeadline(Storage<Task> storage, Scanner scanner) {
+        String input = scanner.nextLine().trim();       //TODO
+        String[] description = input.split(" /by ");    //TODO find a better way
+        System.out.println(input);
+        Task newTask = new DeadlineTask(description[0], description[1]);
+
+        storage.addItem(newTask);
+        System.out.println(name + "Got it. I've added this task:");
+        System.out.println(newTask);
+        System.out.println(name + "You now have " + storage.size() + " tasks in the list.");
     }
     
-    private static <T extends Task> void addEvent(Storage<T> storage, Scanner scanner) {
-        //TODO
+    private static void addEvent(Storage<Task> storage, Scanner scanner) {
+        String input = scanner.nextLine().trim();       //TODO find a better way
+        String[] description = input.split(" /from ");       //TODO
+        String fromAndTo = description[1];
+        String[] time = fromAndTo.split(" /to ");
+
+
+        Task newTask = new EventTask(description[0], time[0], time[1]);
+
+        storage.addItem(newTask);
+        System.out.println(name + "Got it. I've added this task:");
+        System.out.println(newTask);
+        System.out.println(name + "You now have " + storage.size() + " tasks in the list.");
     }
 }
