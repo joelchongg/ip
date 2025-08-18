@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class CommandProcessor {
     private static final HashMap<String, Runnable> commands = new HashMap<>();
-    private static String name = "\nChatterBox: ";
 
     static {
         commands.put("list", CommandProcessor::list);
@@ -21,7 +20,7 @@ public class CommandProcessor {
             Runnable cmd = commands.get(command);
             cmd.run(storage, scanner);
         } else {
-            System.out.println(name + "Invalid Command!");
+            reply("Invalid Command!");
         }
     }
 
@@ -30,7 +29,7 @@ public class CommandProcessor {
     }
 
     private static void list(Storage<Task> storage, Scanner scanner) {
-        System.out.println(name + "Here are the tasks in your list:");
+        reply("Here are the tasks in your list:");
         storage.displayItems();
         scanner.nextLine();
     }
@@ -40,12 +39,12 @@ public class CommandProcessor {
             int index = scanner.nextInt();
             Task item = storage.getItem(index - 1);
             item.setCompleted();
-            System.out.println(name + "Nice! I've marked this task as done:");
+            reply("Nice! I've marked this task as done:");
             System.out.println(item);
         } catch (InputMismatchException e) {
-            System.out.println(name + "Invalid Input! Try: mark <index>");
+            reply("Invalid Input! Try: mark <index>");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println(name + "Invalid index! You can only mark tasks between 1 and " + storage.size() + ".");
+            reply("Invalid index! You can only mark tasks between 1 and " + storage.size() + ".");
         } finally {
             scanner.nextLine();
         }
@@ -56,12 +55,12 @@ public class CommandProcessor {
             int index = scanner.nextInt();
             Task item = storage.getItem(index - 1);
             item.setIncomplete();
-            System.out.println(name + "OK, I've marked this task as not done yet:");
+            reply("OK, I've marked this task as not done yet:");
             System.out.println(item);
         } catch (InputMismatchException e) {
-            System.out.println(name + "Invalid Input! Try: unmark <index>");
+            reply("Invalid Input! Try: unmark <index>");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println(name + "Invalid Index! You can only unmark tasks between 1 and " + storage.size() + ".");
+            reply("Invalid Index! You can only unmark tasks between 1 and " + storage.size() + ".");
         } finally {
             scanner.nextLine();
         }
@@ -72,13 +71,13 @@ public class CommandProcessor {
             String token = scanner.nextLine().trim();
 
             if (token.isEmpty()) {
-                throw new ChatterBoxException(name + "Uh oh! You forgot to include a description for your todo task! Try again!");
+                throw new ChatterBoxException("Uh oh! You forgot to include a description for your todo task! Try again!");
             }
 
             Task newTask = new TodoTask(token);
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            System.out.println(e.getMessage());
+            reply(e.getMessage());
         }
     }
 
@@ -87,19 +86,19 @@ public class CommandProcessor {
             String input = scanner.nextLine().trim();
             
             if (input.isEmpty()) {
-                throw new ChatterBoxException(name + "Uh oh! You forgot to include a description for your deadline task! Try again!");
+                throw new ChatterBoxException("Uh oh! You forgot to include a description for your deadline task! Try again!");
             }
             
             String[] tokens = parseInput(input, " /by ");
             
             if (tokens.length != 2) {
-                throw new ChatterBoxException(name + "Uh oh! You did not input your deadline task correctly! Try: deadline <description> /by <deadline>");
+                throw new ChatterBoxException("Uh oh! You did not input your deadline task correctly! Try: deadline <description> /by <deadline>");
             }
     
             Task newTask = new DeadlineTask(tokens[0], tokens[1]);
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            System.out.println(e.getMessage());
+            reply(e.getMessage());
         }
     }
     
@@ -108,19 +107,19 @@ public class CommandProcessor {
             String input = scanner.nextLine().trim();
 
             if (input.isEmpty()) {
-                throw new ChatterBoxException(name + "Uh oh! You forgot to include a description for your event task! Try again!");
+                throw new ChatterBoxException("Uh oh! You forgot to include a description for your event task! Try again!");
             }
 
             String[] tokens = parseInput(input, " /from ", " /to ");
 
             if (tokens.length != 3) {
-                throw new ChatterBoxException(name + "Uh oh! You did not input your event task correctly! Try: event <description> /from <time> /to <time>");
+                throw new ChatterBoxException("Uh oh! You did not input your event task correctly! Try: event <description> /from <time> /to <time>");
             }
 
             Task newTask = new EventTask(tokens[0], tokens[1], tokens[2]);
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            System.out.println(e.getMessage());
+            reply(e.getMessage());
         }
     }
 
@@ -128,13 +127,13 @@ public class CommandProcessor {
         try {
             int index = scanner.nextInt();
             Task deleted = storage.removeItem(index - 1);
-            System.out.println(name + "Noted. I've removed this task:");
+            reply("Noted. I've removed this task:");
             System.out.println(deleted);
-            System.out.println(name + "Now you have " + storage.size() + " tasks in the list.");
+            reply("Now you have " + storage.size() + " tasks in the list.");
         } catch (InputMismatchException e) {
-            System.out.println(name + "Invalid Input! Try: delete <index>");
+            reply("Invalid Input! Try: delete <index>");
         } catch (IndexOutOfBoundsException e) {
-            System.out.println(name + "Invalid index! You can only delete tasks between 1 and " + storage.size() + ".");
+            reply("Invalid index! You can only delete tasks between 1 and " + storage.size() + ".");
         } finally {
             scanner.nextLine();
         }
@@ -146,7 +145,7 @@ public class CommandProcessor {
         for (int i = 0; i < delimiters.length; ++i) {
             int idx = input.indexOf(delimiters[i], lastIndex);
             if (idx == -1) {
-                throw new ChatterBoxException(name + "Uh oh! You forgot to include the delimiter: " + delimiters[i]);
+                throw new ChatterBoxException("Uh oh! You forgot to include the delimiter: " + delimiters[i]);
             }
 
             parts[i] = input.substring(lastIndex, idx).trim();
@@ -159,8 +158,12 @@ public class CommandProcessor {
 
     private static void addTask(Storage<Task> storage, Task task) {
         storage.addItem(task);
-        System.out.println(name + "Got it. I've added this task:");
+        reply("Got it. I've added this task:");
         System.out.println(task);
-        System.out.println(name + "You now have " + storage.size() + " tasks in the list.");
+        reply("You now have " + storage.size() + " tasks in the list.");
+    }
+
+    private static void reply(String message) {
+        System.out.println("\nChatterBox: " + message);
     }
 }
