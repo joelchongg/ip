@@ -68,4 +68,18 @@ ChatterBox: Uh oh! You forgot to include the delimiter:  /to
 Enter Input: 
 ChatterBox: Uh oh! You forgot to include the delimiter:  /from 
 Enter Input: 
+ChatterBox: Invalid Input! Try: delete <index>
+Enter Input: 
+ChatterBox: Invalid index! You can only delete tasks between 1 and 3.
+Enter Input: 
+ChatterBox: Noted. I've removed this task:
+[D] [ ] return book (by: Sunday)
+
+ChatterBox: Now you have 2 tasks in the list.
+Enter Input: 
+ChatterBox: Here are the tasks in your list:
+1.[T] [X] borrow book
+2.[E] [ ] project meeting (from: Mon 2pm to: 4pm)
+
+Enter Input: 
 ChatterBox: Bye. Hope to see you again soon!

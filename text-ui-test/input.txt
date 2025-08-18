@@ -20,4 +20,8 @@ event
 event nodelimiter
 event onlyfrom /from delimiter
 event wrong /by delimiter
+delete random
+delete 0
+delete 2
+list
 bye
