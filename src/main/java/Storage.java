@@ -19,8 +19,8 @@ public class Storage<T extends Task> {
         return this.storage.add(item);
     }
 
-    public boolean removeItem(T item) {
-        return this.storage.remove(item);
+    public T removeItem(int index) throws IndexOutOfBoundsException {
+        return this.storage.remove(index);
     }
 
     public T getItem(int index) throws IndexOutOfBoundsException {

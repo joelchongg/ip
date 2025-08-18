@@ -13,6 +13,7 @@ public class CommandProcessor {
         commands.put("todo", CommandProcessor::addTodo);
         commands.put("deadline", CommandProcessor::addDeadline);
         commands.put("event", CommandProcessor::addEvent);
+        commands.put("delete", CommandProcessor::delete);
     }
 
     public static void processCommand(Storage<Task> storage, Scanner scanner, String command) {
@@ -120,6 +121,22 @@ public class CommandProcessor {
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private static void delete(Storage<Task> storage, Scanner scanner) {
+        try {
+            int index = scanner.nextInt();
+            Task deleted = storage.removeItem(index - 1);
+            System.out.println(name + "Noted. I've removed this task:");
+            System.out.println(deleted);
+            System.out.println(name + "Now you have " + storage.size() + " tasks in the list.");
+        } catch (InputMismatchException e) {
+            System.out.println(name + "Invalid Input! Try: delete <index>");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(name + "Invalid index! You can only delete tasks between 1 and " + storage.size() + ".");
+        } finally {
+            scanner.nextLine();
         }
     }
 
