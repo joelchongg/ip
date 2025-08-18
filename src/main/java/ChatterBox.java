@@ -32,7 +32,9 @@ public class ChatterBox {
             }
 
             if (!CommandProcessor.isCommand(userInput)) {
-                System.out.println(name + "Invalid command!");
+                System.out.println(name + "Invalid command! Try Again!");
+                scanner.nextLine();
+                // Clear input buffer
                 continue;
             }
 

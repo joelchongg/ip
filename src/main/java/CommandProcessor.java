@@ -31,6 +31,7 @@ public class CommandProcessor {
     private static void list(Storage<Task> storage, Scanner scanner) {
         System.out.println(name + "Here are the tasks in your list:");
         storage.displayItems();
+        scanner.nextLine();
     }
 
     private static void mark(Storage<Task> storage, Scanner scanner) {
@@ -41,7 +42,11 @@ public class CommandProcessor {
             System.out.println(name + "Nice! I've marked this task as done:");
             System.out.println(item);
         } catch (InputMismatchException e) {
-            System.out.println(name + "Invalid input for mark!");
+            System.out.println(name + "Invalid Input! Try: mark <index>");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(name + "Invalid index! You can only mark tasks between 1 and " + storage.size() + ".");
+        } finally {
+            scanner.nextLine();
         }
     }
 
@@ -53,39 +58,78 @@ public class CommandProcessor {
             System.out.println(name + "OK, I've marked this task as not done yet:");
             System.out.println(item);
         } catch (InputMismatchException e) {
-            System.out.println(name + "Invalid input for unmark!");
+            System.out.println(name + "Invalid Input! Try: unmark <index>");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(name + "Invalid Index! You can only unmark tasks between 1 and " + storage.size() + ".");
+        } finally {
+            scanner.nextLine();
         }
     }
 
     private static void addTodo(Storage<Task> storage, Scanner scanner) {
-        String token = scanner.nextLine().trim();
-        Task newTask = new TodoTask(token);
-        addTask(storage, newTask);
+        try {
+            String token = scanner.nextLine().trim();
+
+            if (token.isEmpty()) {
+                throw new ChatterBoxException(name + "Uh oh! You forgot to include a description for your todo task! Try again!");
+            }
+
+            Task newTask = new TodoTask(token);
+            addTask(storage, newTask);
+        } catch (ChatterBoxException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void addDeadline(Storage<Task> storage, Scanner scanner) {
-        String input = scanner.nextLine().trim();
-        String[] tokens = parseInput(input, " /by ");
-
-        Task newTask = new DeadlineTask(tokens[0], tokens[1]);
-        addTask(storage, newTask);
+        try {
+            String input = scanner.nextLine().trim();
+            
+            if (input.isEmpty()) {
+                throw new ChatterBoxException(name + "Uh oh! You forgot to include a description for your deadline task! Try again!");
+            }
+            
+            String[] tokens = parseInput(input, " /by ");
+            
+            if (tokens.length != 2) {
+                throw new ChatterBoxException(name + "Uh oh! You did not input your deadline task correctly! Try: deadline <description> /by <deadline>");
+            }
+    
+            Task newTask = new DeadlineTask(tokens[0], tokens[1]);
+            addTask(storage, newTask);
+        } catch (ChatterBoxException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
     private static void addEvent(Storage<Task> storage, Scanner scanner) {
-        String input = scanner.nextLine().trim();
-        String[] tokens = parseInput(input, " /from ", " /to ");
+        try {
+            String input = scanner.nextLine().trim();
 
-        Task newTask = new EventTask(tokens[0], tokens[1], tokens[2]);
-        addTask(storage, newTask);
+            if (input.isEmpty()) {
+                throw new ChatterBoxException(name + "Uh oh! You forgot to include a description for your event task! Try again!");
+            }
+
+            String[] tokens = parseInput(input, " /from ", " /to ");
+
+            if (tokens.length != 3) {
+                throw new ChatterBoxException(name + "Uh oh! You did not input your event task correctly! Try: event <description> /from <time> /to <time>");
+            }
+
+            Task newTask = new EventTask(tokens[0], tokens[1], tokens[2]);
+            addTask(storage, newTask);
+        } catch (ChatterBoxException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    private static String[] parseInput(String input, String... delimiters) {
+    private static String[] parseInput(String input, String... delimiters) throws ChatterBoxException {
         String[] parts = new String[delimiters.length + 1];
         int lastIndex = 0;
         for (int i = 0; i < delimiters.length; ++i) {
             int idx = input.indexOf(delimiters[i], lastIndex);
             if (idx == -1) {
-                throw new IllegalArgumentException("Missing Delimiter: " + delimiters[i]);
+                throw new ChatterBoxException(name + "Uh oh! You forgot to include the delimiter: " + delimiters[i]);
             }
 
             parts[i] = input.substring(lastIndex, idx).trim();

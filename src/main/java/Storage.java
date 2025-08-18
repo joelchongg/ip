@@ -23,7 +23,7 @@ public class Storage<T extends Task> {
         return this.storage.remove(item);
     }
 
-    public T getItem(int index) {
+    public T getItem(int index) throws IndexOutOfBoundsException {
         return this.storage.get(index);
     }
 
