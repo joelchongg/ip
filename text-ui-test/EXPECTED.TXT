@@ -1,47 +1,71 @@
 
 ChatterBox: Hello! I'm ChatterBox.
 ChatterBox: What can I do for you?
-Enter Input:
+Enter Input: 
 ChatterBox: Got it. I've added this task:
 [T] [ ] borrow book
 
 ChatterBox: You now have 1 tasks in the list.
-Enter Input:
+Enter Input: 
 ChatterBox: Here are the tasks in your list:
 1.[T] [ ] borrow book
 
-Enter Input:
+Enter Input: 
 ChatterBox: Got it. I've added this task:
 [D] [ ] return book (by: Sunday)
 
 ChatterBox: You now have 2 tasks in the list.
-Enter Input:
+Enter Input: 
 ChatterBox: Got it. I've added this task:
 [E] [ ] project meeting (from: Mon 2pm to: 4pm)
 
 ChatterBox: You now have 3 tasks in the list.
-Enter Input:
+Enter Input: 
 ChatterBox: Nice! I've marked this task as done:
 [T] [X] borrow book
-Enter Input:
+Enter Input: 
 ChatterBox: Nice! I've marked this task as done:
 [E] [X] project meeting (from: Mon 2pm to: 4pm)
-Enter Input:
+Enter Input: 
 ChatterBox: Here are the tasks in your list:
 1.[T] [X] borrow book
 2.[D] [ ] return book (by: Sunday)
 3.[E] [X] project meeting (from: Mon 2pm to: 4pm)
 
-Enter Input:
+Enter Input: 
 ChatterBox: OK, I've marked this task as not done yet:
 [E] [ ] project meeting (from: Mon 2pm to: 4pm)
-Enter Input:
+Enter Input: 
 ChatterBox: Here are the tasks in your list:
 1.[T] [X] borrow book
 2.[D] [ ] return book (by: Sunday)
 3.[E] [ ] project meeting (from: Mon 2pm to: 4pm)
 
-Enter Input:
-ChatterBox: Invalid command!
-Enter Input:
+Enter Input: 
+ChatterBox: Invalid command! Try Again!
+Enter Input: 
+ChatterBox: Invalid Input! Try: mark <index>
+Enter Input: 
+ChatterBox: Invalid index! You can only mark tasks between 1 and 3.
+Enter Input: 
+ChatterBox: Invalid Input! Try: unmark <index>
+Enter Input: 
+ChatterBox: Invalid Index! You can only unmark tasks between 1 and 3.
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include a description for your todo task! Try again!
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include a description for your deadline task! Try again!
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include the delimiter:  /by 
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include the delimiter:  /by 
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include a description for your event task! Try again!
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include the delimiter:  /from 
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include the delimiter:  /to 
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include the delimiter:  /from 
+Enter Input: 
 ChatterBox: Bye. Hope to see you again soon!

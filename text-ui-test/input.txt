@@ -7,5 +7,17 @@ mark 3
 list
 unmark 3
 list
-random
+invalid input
+mark nothing
+mark 0
+unmark nothing
+unmark 4
+todo
+deadline
+deadline nodelimiter
+deadline wrong /from delimiter
+event
+event nodelimiter
+event onlyfrom /from delimiter
+event wrong /by delimiter
 bye
