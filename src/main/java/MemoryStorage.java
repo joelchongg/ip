@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,23 +16,42 @@ public class MemoryStorage {
         }
     }
 
-    public static boolean loadTasks(Storage<Task> storage) {
-        try (Scanner scanner = new Scanner(taskFile)) {
+    public static void loadTasks(Storage<Task> storage) {
+        File tempFile = new File("./data/tasks_tmp.txt");
+        boolean isCorruptedFile = false;
+
+        try (Scanner scanner = new Scanner(taskFile);
+             PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
+
             while (scanner.hasNextLine()) {
-                initializeTask(storage, scanner.nextLine());
+                String line = scanner.nextLine();
+
+                if (!initializeTask(storage, line)) {
+                    isCorruptedFile = true;
+                    continue;
+                }
+                writer.println(line);
             }
-        } catch (FileNotFoundException e) {
+
+            if (isCorruptedFile) {
+                System.out.println("\nChatterBox: Save file is corrupted! Corrupted tasks have been deleted.");
+
+                if (!taskFile.delete() || !tempFile.renameTo(taskFile)) {
+                    System.out.println("File update failed! Task data may be inconsistent.");
+                }
+            } else {
+                tempFile.delete();
+            }
+        } catch (IOException e) {
             System.out.println("Unable to find task file from memory!");
         }
-        
-        return true;
     } 
 
     public static void updateTaskCompletion(int index, boolean isCompleted) {
         File tempFile = new File("./data/tasks_tmp.txt");
         int currentLine = 0;
-        try (Scanner scanner = new Scanner(taskFile)) {
-            PrintWriter writer = new PrintWriter(new FileWriter(tempFile));
+        try (Scanner scanner = new Scanner(taskFile);
+             PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -45,8 +63,6 @@ public class MemoryStorage {
                 ++currentLine;
                 writer.println(line);
             }
-
-            writer.close();
         } catch (IOException e) {
             System.out.println("Unable to find file!");
         }
@@ -84,8 +100,8 @@ public class MemoryStorage {
     public static void deleteTask(int index) {
        File tempFile = new File("./data/tasks_tmp.txt");
        int currentLine = 0;
-        try (Scanner scanner = new Scanner(taskFile)) {
-            PrintWriter writer = new PrintWriter(new FileWriter(tempFile));
+        try (Scanner scanner = new Scanner(taskFile);
+             PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -98,8 +114,6 @@ public class MemoryStorage {
                 ++currentLine;
                 writer.println(line);
             }
-
-            writer.close();
         } catch (IOException e) {
             System.out.println("Unable to find file!");
         }
@@ -115,26 +129,39 @@ public class MemoryStorage {
     }
 
     private static boolean initializeTask(Storage<Task> storage, String input) {
-        String[] tokens = input.split(" \\| ");
-        char taskType = tokens[0].charAt(0);
-        boolean isCompleted = Boolean.parseBoolean(tokens[1]);
-        String description = tokens[2];
+        try {
+            String[] tokens = input.split(" \\| ");
+            char taskType = tokens[0].charAt(0);
+            String completed = tokens[1];
+            String description = tokens[2];
+            
+            boolean isCompleted;
+            if (completed.equals("1")) {
+                isCompleted = true;
+            } else if (completed.equals("0")) {
+                isCompleted = false;
+            } else {
+                throw new ChatterBoxException("Corrupted save file. Completion status is invalid.");
+            }
 
-        switch (taskType) {
-        case 'T':
-            storage.addItem(new TodoTask(description, isCompleted));
-            return true;
-        case 'D':
-            String deadline = tokens[3];
-            storage.addItem(new DeadlineTask(description, deadline, isCompleted));
-            return true;
-        case 'E':
-            String startTime = tokens[3];
-            String endTime = tokens[4];
-            storage.addItem(new EventTask(description, startTime, endTime, isCompleted));
-            return true;
-        
-        default:
+            switch (taskType) {
+            case 'T':
+                storage.addItem(new TodoTask(description, isCompleted));
+                return true;
+            case 'D':
+                String deadline = tokens[3];
+                storage.addItem(new DeadlineTask(description, deadline, isCompleted));
+                return true;
+            case 'E':
+                String startTime = tokens[3];
+                String endTime = tokens[4];
+                storage.addItem(new EventTask(description, startTime, endTime, isCompleted));
+                return true;
+            
+            default:
+                return false;
+            }
+        } catch (IndexOutOfBoundsException | ChatterBoxException e) {
             return false;
         }
     }
