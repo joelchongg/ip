@@ -1,3 +1,8 @@
+package chatterbox.memory;
+
+import chatterbox.exception.ChatterBoxException;
+import chatterbox.task.*;
+import chatterbox.ui.ChatterBoxUI;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

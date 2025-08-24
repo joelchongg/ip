@@ -1,3 +1,9 @@
+package chatterbox.ui;
+
+import chatterbox.command.CommandProcessor;
+import chatterbox.memory.MemoryStorage;
+import chatterbox.memory.Storage;
+import chatterbox.task.Task;
 import java.util.Scanner;
 
 public class ChatterBox {

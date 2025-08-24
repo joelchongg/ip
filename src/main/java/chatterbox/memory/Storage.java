@@ -1,3 +1,6 @@
+package chatterbox.memory;
+
+import chatterbox.task.Task;
 import java.util.ArrayList;
 
 public class Storage<T extends Task> {

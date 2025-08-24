@@ -1,3 +1,5 @@
+package chatterbox.task;
+
 public class TodoTask extends Task {
 
     private static char symbol = 'T';

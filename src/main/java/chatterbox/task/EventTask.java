@@ -1,3 +1,5 @@
+package chatterbox.task;
+
 public class EventTask extends Task {
     
     private static char symbol = 'E';
