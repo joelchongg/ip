@@ -12,9 +12,11 @@ ChatterBox: Here are the tasks in your list:
 
 Enter Input: 
 ChatterBox: Got it. I've added this task:
-[D] [ ] return book (by: Sunday)
+[D] [ ] return book (by: Dec 18 2025 18:00)
 
 ChatterBox: You now have 2 tasks in the list.
+Enter Input: 
+ChatterBox: Oops! Your deadline format is incorrect! It should be "dd-mm-yyyy HH:mm". Try Again!
 Enter Input: 
 ChatterBox: Got it. I've added this task:
 [E] [ ] project meeting (from: Mon 2pm to: 4pm)
@@ -29,7 +31,7 @@ ChatterBox: Nice! I've marked this task as done:
 Enter Input: 
 ChatterBox: Here are the tasks in your list:
 1.[T] [X] borrow book
-2.[D] [ ] return book (by: Sunday)
+2.[D] [ ] return book (by: Dec 18 2025 18:00)
 3.[E] [X] project meeting (from: Mon 2pm to: 4pm)
 
 Enter Input: 
@@ -38,7 +40,7 @@ ChatterBox: OK, I've marked this task as not done yet:
 Enter Input: 
 ChatterBox: Here are the tasks in your list:
 1.[T] [X] borrow book
-2.[D] [ ] return book (by: Sunday)
+2.[D] [ ] return book (by: Dec 18 2025 18:00)
 3.[E] [ ] project meeting (from: Mon 2pm to: 4pm)
 
 Enter Input: 
@@ -73,7 +75,7 @@ Enter Input:
 ChatterBox: Invalid index! You can only delete tasks between 1 and 3.
 Enter Input: 
 ChatterBox: Noted. I've removed this task:
-[D] [ ] return book (by: Sunday)
+[D] [ ] return book (by: Dec 18 2025 18:00)
 
 ChatterBox: Now you have 2 tasks in the list.
 Enter Input: 
