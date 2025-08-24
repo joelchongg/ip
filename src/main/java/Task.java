@@ -1,24 +1,29 @@
 public abstract class Task {
     private String description;
-    private boolean completed;
+    private boolean isCompleted;
     private char symbol;
 
     public Task(String description, char symbol) {
         this.description = description;
-        this.completed = false;
+        this.isCompleted = false;
         this.symbol = symbol;
     }
 
+    public Task(String description, char symbol, boolean isCompleted) {
+        this(description, symbol);
+        this.isCompleted = isCompleted;
+    }
+
     public boolean isCompleted() {
-        return this.completed;
+        return this.isCompleted;
     }
     
     public void setCompleted() {
-        this.completed = true;
+        this.isCompleted = true;
     }
 
     public void setIncomplete() {
-        this.completed = false;
+        this.isCompleted = false;
     }
 
     public String getTaskDescription() {
@@ -26,7 +31,7 @@ public abstract class Task {
     }
 
     public String getStatusIcon() {
-        return (this.completed ? "X" : " ");
+        return (this.isCompleted ? "X" : " ");
     }
 
     public char getTaskSymbol() {
