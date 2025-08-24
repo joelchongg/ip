@@ -1,3 +1,4 @@
+import java.time.DateTimeException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -105,6 +106,8 @@ public class CommandProcessor {
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
             reply(e.getMessage());
+        } catch(DateTimeException e) {
+            reply("Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!");
         }
     }
     
