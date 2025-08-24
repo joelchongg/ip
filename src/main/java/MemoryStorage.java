@@ -34,7 +34,7 @@ public class MemoryStorage {
             }
 
             if (isCorruptedFile) {
-                System.out.println("\nChatterBox: Save file is corrupted! Corrupted tasks have been deleted.");
+                ChatterBoxUI.reply("Save file is corrupted! Corrupted tasks have been deleted.");
 
                 if (!taskFile.delete() || !tempFile.renameTo(taskFile)) {
                     System.out.println("File update failed! Task data may be inconsistent.");

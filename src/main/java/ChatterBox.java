@@ -2,18 +2,7 @@ import java.util.Scanner;
 
 public class ChatterBox {
 
-    private static String name = "\nChatterBox: ";
     private static Storage<Task> storage = new Storage<>();
-
-    private static void greetUser() {
-        String startPhrase = name + "Hello! I'm ChatterBox." + name + "What can I do for you?";
-        System.out.println(startPhrase);
-    }
-
-    private static void exit() {
-        String endPhrase = name + "Bye. Hope to see you again soon!";
-        System.out.println(endPhrase);
-    }
 
     private static void run() {
         Scanner scanner = new Scanner(System.in);
@@ -32,9 +21,8 @@ public class ChatterBox {
             }
 
             if (!CommandProcessor.isCommand(userInput)) {
-                System.out.println(name + "Invalid command! Try Again!");
-                scanner.nextLine();
-                // Clear input buffer
+                ChatterBoxUI.reply("Invalid command! Try Again!");
+                scanner.nextLine();     // Clear input buffer
                 continue;
             }
 
@@ -50,8 +38,8 @@ public class ChatterBox {
 
     public static void main(String[] args) {
         initialize();
-        greetUser();
+        ChatterBoxUI.greet();
         run();
-        exit();
+        ChatterBoxUI.farewell();
     }
 }

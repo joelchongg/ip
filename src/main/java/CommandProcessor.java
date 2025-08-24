@@ -21,7 +21,7 @@ public class CommandProcessor {
             Runnable cmd = commands.get(command);
             cmd.run(storage, scanner);
         } else {
-            reply("Invalid Command!");
+            ChatterBoxUI.reply("Invalid Command!");
         }
     }
 
@@ -30,7 +30,7 @@ public class CommandProcessor {
     }
 
     private static void list(Storage<Task> storage, Scanner scanner) {
-        reply("Here are the tasks in your list:");
+        ChatterBoxUI.reply("Here are the tasks in your list:");
         storage.displayItems();
         scanner.nextLine();
     }
@@ -43,12 +43,12 @@ public class CommandProcessor {
             item.setCompleted();
             MemoryStorage.updateTaskCompletion(index - 1, true);
 
-            reply("Nice! I've marked this task as done:");
+            ChatterBoxUI.reply("Nice! I've marked this task as done:");
             System.out.println(item);
         } catch (InputMismatchException e) {
-            reply("Invalid Input! Try: mark <index>");
+            ChatterBoxUI.reply("Invalid Input! Try: mark <index>");
         } catch (IndexOutOfBoundsException e) {
-            reply("Invalid index! You can only mark tasks between 1 and " + storage.size() + ".");
+            ChatterBoxUI.reply("Invalid index! You can only mark tasks between 1 and " + storage.size() + ".");
         } finally {
             scanner.nextLine();
         }
@@ -62,12 +62,12 @@ public class CommandProcessor {
             item.setIncomplete();
             MemoryStorage.updateTaskCompletion(index - 1, false);
 
-            reply("OK, I've marked this task as not done yet:");
+            ChatterBoxUI.reply("OK, I've marked this task as not done yet:");
             System.out.println(item);
         } catch (InputMismatchException e) {
-            reply("Invalid Input! Try: unmark <index>");
+            ChatterBoxUI.reply("Invalid Input! Try: unmark <index>");
         } catch (IndexOutOfBoundsException e) {
-            reply("Invalid Index! You can only unmark tasks between 1 and " + storage.size() + ".");
+            ChatterBoxUI.reply("Invalid Index! You can only unmark tasks between 1 and " + storage.size() + ".");
         } finally {
             scanner.nextLine();
         }
@@ -84,7 +84,7 @@ public class CommandProcessor {
             Task newTask = new TodoTask(token);
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            reply(e.getMessage());
+            ChatterBoxUI.reply(e.getMessage());
         }
     }
 
@@ -105,9 +105,9 @@ public class CommandProcessor {
             Task newTask = new DeadlineTask(tokens[0], tokens[1]);
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            reply(e.getMessage());
+            ChatterBoxUI.reply(e.getMessage());
         } catch(DateTimeException e) {
-            reply("Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!");
+            ChatterBoxUI.reply("Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!");
         }
     }
     
@@ -128,7 +128,7 @@ public class CommandProcessor {
             Task newTask = new EventTask(tokens[0], tokens[1], tokens[2]);
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            reply(e.getMessage());
+            ChatterBoxUI.reply(e.getMessage());
         }
     }
 
@@ -138,13 +138,13 @@ public class CommandProcessor {
             Task deleted = storage.removeItem(index - 1);
             MemoryStorage.deleteTask(index - 1);
 
-            reply("Noted. I've removed this task:");
+            ChatterBoxUI.reply("Noted. I've removed this task:");
             System.out.println(deleted);
-            reply("Now you have " + storage.size() + " tasks in the list.");
+            ChatterBoxUI.reply("Now you have " + storage.size() + " tasks in the list.");
         } catch (InputMismatchException e) {
-            reply("Invalid Input! Try: delete <index>");
+            ChatterBoxUI.reply("Invalid Input! Try: delete <index>");
         } catch (IndexOutOfBoundsException e) {
-            reply("Invalid index! You can only delete tasks between 1 and " + storage.size() + ".");
+            ChatterBoxUI.reply("Invalid index! You can only delete tasks between 1 and " + storage.size() + ".");
         } finally {
             scanner.nextLine();
         }
@@ -171,12 +171,8 @@ public class CommandProcessor {
         storage.addItem(task);
         MemoryStorage.saveTask(task);
 
-        reply("Got it. I've added this task:");
+        ChatterBoxUI.reply("Got it. I've added this task:");
         System.out.println(task);
-        reply("You now have " + storage.size() + " tasks in the list.");
-    }
-
-    private static void reply(String message) {
-        System.out.println("\nChatterBox: " + message);
+        ChatterBoxUI.reply("You now have " + storage.size() + " tasks in the list.");
     }
 }
