@@ -85,7 +85,7 @@ public class MemoryStorage {
             
             if (task instanceof DeadlineTask) {
                 DeadlineTask tempTask = (DeadlineTask) task;
-                line += " | " + tempTask.getDeadline();
+                line += " | " + tempTask.serializeDeadline();
             } else if (task instanceof EventTask) {
                 EventTask tempTask = (EventTask) task;
                 line += " | " + tempTask.getStartTime() + " | " + tempTask.getEndTime();
