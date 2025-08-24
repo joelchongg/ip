@@ -10,6 +10,20 @@ public class EventTask extends Task {
         this.endTime = endTime;
     }
 
+    public EventTask(String description, String startTime, String endTime, boolean isCompleted) {
+        super(description, symbol, isCompleted);
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public String getStartTime() {
+        return this.startTime;
+    }
+
+    public String getEndTime() {
+        return this.endTime;
+    }
+
     @Override
     public String toString() {
         return String.format("%s (from: %s to: %s)", 

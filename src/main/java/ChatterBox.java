@@ -44,11 +44,14 @@ public class ChatterBox {
         scanner.close();
     }
 
+    public static void initialize() {
+        MemoryStorage.loadTasks(storage);
+    }
+
     public static void main(String[] args) {
+        initialize();
         greetUser();
-
         run();
-
         exit();
     }
 }

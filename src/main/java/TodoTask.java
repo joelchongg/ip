@@ -5,4 +5,8 @@ public class TodoTask extends Task {
     public TodoTask(String description) {
         super(description, symbol);
     }
+
+    public TodoTask(String description, boolean isCompleted) {
+        super(description, symbol, isCompleted);
+    }
 }

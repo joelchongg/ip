@@ -38,7 +38,10 @@ public class CommandProcessor {
         try {
             int index = scanner.nextInt();
             Task item = storage.getItem(index - 1);
+
             item.setCompleted();
+            MemoryStorage.updateTaskCompletion(index - 1, true);
+
             reply("Nice! I've marked this task as done:");
             System.out.println(item);
         } catch (InputMismatchException e) {
@@ -54,7 +57,10 @@ public class CommandProcessor {
         try {
             int index = scanner.nextInt();
             Task item = storage.getItem(index - 1);
+
             item.setIncomplete();
+            MemoryStorage.updateTaskCompletion(index - 1, false);
+
             reply("OK, I've marked this task as not done yet:");
             System.out.println(item);
         } catch (InputMismatchException e) {
@@ -127,6 +133,8 @@ public class CommandProcessor {
         try {
             int index = scanner.nextInt();
             Task deleted = storage.removeItem(index - 1);
+            MemoryStorage.deleteTask(index - 1);
+
             reply("Noted. I've removed this task:");
             System.out.println(deleted);
             reply("Now you have " + storage.size() + " tasks in the list.");
@@ -158,6 +166,8 @@ public class CommandProcessor {
 
     private static void addTask(Storage<Task> storage, Task task) {
         storage.addItem(task);
+        MemoryStorage.saveTask(task);
+
         reply("Got it. I've added this task:");
         System.out.println(task);
         reply("You now have " + storage.size() + " tasks in the list.");
