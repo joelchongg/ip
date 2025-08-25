@@ -240,6 +240,14 @@ public class CommandProcessor {
         }
     }
 
+    /**
+     * Finds tasks that contain a specific description and outputs it into the command line interface.
+     * Description to search for should be inputted after the 'find' command.
+     * Format: find <description>
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from the command line interface.
+     */
     private static void find(Storage<Task> storage, Scanner scanner) {
         String input = scanner.nextLine().trim();
         
