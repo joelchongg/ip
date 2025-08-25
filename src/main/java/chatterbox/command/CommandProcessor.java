@@ -5,6 +5,7 @@ import chatterbox.memory.Storage;
 import chatterbox.memory.MemoryStorage;
 import chatterbox.task.*;
 import chatterbox.ui.ChatterBoxUI;
+
 import java.time.DateTimeException;
 import java.util.HashMap;
 import java.util.InputMismatchException;
@@ -85,7 +86,9 @@ public class CommandProcessor {
             String token = scanner.nextLine().trim();
 
             if (token.isEmpty()) {
-                throw new ChatterBoxException("Uh oh! You forgot to include a description for your todo task! Try again!");
+                throw new ChatterBoxException(
+                    "Uh oh! You forgot to include a description for your todo task! Try again!"
+                );
             }
 
             Task newTask = new TodoTask(token);
@@ -100,13 +103,17 @@ public class CommandProcessor {
             String input = scanner.nextLine().trim();
             
             if (input.isEmpty()) {
-                throw new ChatterBoxException("Uh oh! You forgot to include a description for your deadline task! Try again!");
+                throw new ChatterBoxException(
+                    "Uh oh! You forgot to include a description for your deadline task! Try again!"
+                );
             }
             
             String[] tokens = parseInput(input, " /by ");
             
             if (tokens.length != 2) {
-                throw new ChatterBoxException("Uh oh! You did not input your deadline task correctly! Try: deadline <description> /by <deadline>");
+                throw new ChatterBoxException(
+                    "Uh oh! You did not input your deadline task correctly! Try: deadline <description> /by <deadline>"
+                );
             }
     
             Task newTask = new DeadlineTask(tokens[0], tokens[1]);
@@ -129,7 +136,9 @@ public class CommandProcessor {
             String[] tokens = parseInput(input, " /from ", " /to ");
 
             if (tokens.length != 3) {
-                throw new ChatterBoxException("Uh oh! You did not input your event task correctly! Try: event <description> /from <time> /to <time>");
+                throw new ChatterBoxException(
+                    "Uh oh! You did not input your event task correctly! Try: event <description> /from <time> /to <time>"
+                );
             }
 
             Task newTask = new EventTask(tokens[0], tokens[1], tokens[2]);

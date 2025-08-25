@@ -3,6 +3,7 @@ package chatterbox.memory;
 import chatterbox.exception.ChatterBoxException;
 import chatterbox.task.*;
 import chatterbox.ui.ChatterBoxUI;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -55,6 +56,7 @@ public class MemoryStorage {
     public static void updateTaskCompletion(int index, boolean isCompleted) {
         File tempFile = new File("./data/tasks_tmp.txt");
         int currentLine = 0;
+
         try (Scanner scanner = new Scanner(taskFile);
              PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
 
@@ -105,6 +107,7 @@ public class MemoryStorage {
     public static void deleteTask(int index) {
        File tempFile = new File("./data/tasks_tmp.txt");
        int currentLine = 0;
+
         try (Scanner scanner = new Scanner(taskFile);
              PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
 
@@ -174,6 +177,7 @@ public class MemoryStorage {
     private static String updateTask(String task, boolean isCompleted) {
         String[] tokens = task.split(" \\| ");
         tokens[1] = isCompleted ? "1" : "0";
+        
         return String.join(" | ", tokens);
     }
 }
