@@ -1,17 +1,15 @@
 package chatterbox.command;
 
-import org.junit.jupiter.api.Test;
-
 import chatterbox.memory.Storage;
 import chatterbox.task.Task;
 import chatterbox.task.TodoTask;
 import chatterbox.testutils.OutputCaptor;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.ByteArrayInputStream;
 import java.util.Scanner;
+import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -55,7 +53,8 @@ public class CommandProcessorTest {
                 CommandProcessor.processCommand(storage, scanner, "todo"));
         
         assertEquals(0, storage.size());
-        assertEquals("ChatterBox: Uh oh! You forgot to include a description for your todo task! Try again!", output.trim());
+        assertEquals("ChatterBox: Uh oh! You forgot to include a description for your todo task! Try again!", 
+                      output.trim());
     }
 
     @Test
