@@ -22,6 +22,12 @@ public class Storage<T extends Task> {
         System.out.println();
     }
 
+    /**
+     * Returns an ArrayList of Tasks for which each Task contains the given description
+     * 
+     * @param desc String used to search the description for.
+     * @return ArrayList<Task>
+     */
     public ArrayList<Task> searchTasksByDescription(String desc) {
         ArrayList<Task> result = new ArrayList<>();
         
