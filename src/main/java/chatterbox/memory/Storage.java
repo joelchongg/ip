@@ -18,6 +18,21 @@ public class Storage<T extends Task> {
         System.out.println();
     }
 
+    public ArrayList<Task> searchTasksByDescription(String desc) {
+        ArrayList<Task> result = new ArrayList<>();
+        
+        for (Task task : storage) {
+            String description = task.getTaskDescription();
+            System.out.println(description);
+
+            if (description.contains(desc)) {
+                result.add(task);
+            }
+        }
+
+        return result;
+    }
+
     public boolean addItem(T item) {
         return this.storage.add(item);
     }

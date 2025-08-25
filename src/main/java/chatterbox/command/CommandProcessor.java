@@ -5,7 +5,9 @@ import chatterbox.memory.Storage;
 import chatterbox.memory.MemoryStorage;
 import chatterbox.task.*;
 import chatterbox.ui.ChatterBoxUI;
+
 import java.time.DateTimeException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -21,6 +23,7 @@ public class CommandProcessor {
         commands.put("deadline", CommandProcessor::addDeadline);
         commands.put("event", CommandProcessor::addEvent);
         commands.put("delete", CommandProcessor::delete);
+        commands.put("find", CommandProcessor::find);
     }
 
     public static void processCommand(Storage<Task> storage, Scanner scanner, String command) {
@@ -155,6 +158,29 @@ public class CommandProcessor {
         } finally {
             scanner.nextLine();
         }
+    }
+
+    private static void find(Storage<Task> storage, Scanner scanner) {
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) {
+            ChatterBoxUI.reply("Uh oh! You forgot to include a description to search for! Try Again!");
+            return;
+        }
+
+        ArrayList<Task> tasks = storage.searchTasksByDescription(input);
+
+        if (tasks.isEmpty()) {
+            ChatterBoxUI.reply("There are no items in your list with that description.");
+            return;
+        }
+
+        ChatterBoxUI.reply("Here are the matching tasks in your list:");
+
+        for (int index = 1; index <= tasks.size(); ++index) {
+            System.out.println(index + "." + tasks.get(index - 1));
+        }
+        System.out.println();
     }
 
     private static String[] parseInput(String input, String... delimiters) throws ChatterBoxException {
