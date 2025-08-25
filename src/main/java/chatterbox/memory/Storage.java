@@ -33,7 +33,6 @@ public class Storage<T extends Task> {
         
         for (Task task : storage) {
             String description = task.getTaskDescription();
-            System.out.println(description);
 
             if (description.contains(desc)) {
                 result.add(task);

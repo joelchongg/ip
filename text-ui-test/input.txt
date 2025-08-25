@@ -25,4 +25,8 @@ delete random
 delete 0
 delete 2
 list
+find
+find bo
+find invalid
+find meeting
 bye

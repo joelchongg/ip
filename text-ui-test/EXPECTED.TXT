@@ -1,5 +1,6 @@
 
 ChatterBox: Hello! I'm ChatterBox.
+
 ChatterBox: What can I do for you?
 Enter Input: 
 ChatterBox: Got it. I've added this task:
@@ -82,6 +83,18 @@ Enter Input:
 ChatterBox: Here are the tasks in your list:
 1.[T] [X] borrow book
 2.[E] [ ] project meeting (from: Mon 2pm to: 4pm)
+
+Enter Input: 
+ChatterBox: Uh oh! You forgot to include a description to search for! Try Again!
+Enter Input: 
+ChatterBox: Here are the matching tasks in your list:
+1.[T] [X] borrow book
+
+Enter Input: 
+ChatterBox: There are no items in your list with that description.
+Enter Input: 
+ChatterBox: Here are the matching tasks in your list:
+1.[E] [ ] project meeting (from: Mon 2pm to: 4pm)
 
 Enter Input: 
 ChatterBox: Bye. Hope to see you again soon!
