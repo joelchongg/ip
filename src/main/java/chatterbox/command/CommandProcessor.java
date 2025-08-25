@@ -23,6 +23,14 @@ public class CommandProcessor {
         commands.put("delete", CommandProcessor::delete);
     }
 
+    /**
+     * Processes the command given in the parameter.
+     * If the command is invalid, no changes are made and "Invalid Command" is seen in output.
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from command line interface.
+     * @param command Command to be processed.
+     */
     public static void processCommand(Storage<Task> storage, Scanner scanner, String command) {
         if (isCommand(command)) {
             Runnable cmd = commands.get(command);
@@ -32,16 +40,38 @@ public class CommandProcessor {
         }
     }
 
+    /**
+     * Returns a boolean depending if command is valid.
+     * 
+     * @param command String for a command.
+     * @return boolean
+     */
     public static boolean isCommand(String command) {
         return commands.containsKey(command);
     }
 
+    /**
+     * Outputs to command line interface tasks in the storage in a numbered list.
+     * If storage is empty, no output is produced.
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from command line interface.
+     */
     private static void list(Storage<Task> storage, Scanner scanner) {
         ChatterBoxUI.reply("Here are the tasks in your list:");
         storage.displayItems();
         scanner.nextLine();
     }
 
+    /**
+     * Takes in input from command line interface and 
+     * marks the task at the corresponding index from input.
+     * Subsequent input should be an integer denoting the index of the task
+     * in the storage object.
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from command line interface.
+     */
     private static void mark(Storage<Task> storage, Scanner scanner) {
         try {
             int index = scanner.nextInt();
@@ -61,6 +91,15 @@ public class CommandProcessor {
         }
     }
 
+    /**
+     * Takes in input from command line interface and
+     * marks the task at the corresponding index from input.
+     * Subsequent input should be an integer denoting the index of the task
+     * in the storage object.
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from command line interface.
+     */
     private static void unmark(Storage<Task> storage, Scanner scanner) {
         try {
             int index = scanner.nextInt();
@@ -80,6 +119,14 @@ public class CommandProcessor {
         }
     }
 
+    /**
+     * Creates and adds a todo Task object into the storage.
+     * Description for the task object should be inputted after the 'todo' command.
+     * Input Format: todo <description>
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from command line interface.
+     */
     private static void addTodo(Storage<Task> storage, Scanner scanner) {
         try {
             String token = scanner.nextLine().trim();
@@ -95,6 +142,15 @@ public class CommandProcessor {
         }
     }
 
+    /**
+     * Creates and adds a deadline Task object into the storage.
+     * Description for the task object should be inputted after the 'deadline' command.
+     * Input Format: deadline <description> /by <LocalDateTime>
+     * LocalDateTime format should follow: dd-mm-yyyy HH:mm
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from command line interface.
+     */
     private static void addDeadline(Storage<Task> storage, Scanner scanner) {
         try {
             String input = scanner.nextLine().trim();
@@ -118,6 +174,14 @@ public class CommandProcessor {
         }
     }
     
+    /**
+     * Creates and adds a event Task object into the storage.
+     * Description for the task object should be inputted after the 'event' command.
+     * Input Format: event <description> from: <time> to: <time>
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from command line interface.
+     */
     private static void addEvent(Storage<Task> storage, Scanner scanner) {
         try {
             String input = scanner.nextLine().trim();
@@ -139,6 +203,14 @@ public class CommandProcessor {
         }
     }
 
+    /**
+     * Deletes a task from the storage
+     * The task deleted corresponds to the index inputted after the 'delete' command.
+     * Input Format: delete <index>
+     * 
+     * @param storage Storage object in which Task objects are stored.
+     * @param scanner Scanner used to read input from command line interface.
+     */
     private static void delete(Storage<Task> storage, Scanner scanner) {
         try {
             int index = scanner.nextInt();
@@ -157,6 +229,15 @@ public class CommandProcessor {
         }
     }
 
+    /**
+     * Returns a String[] that contains the parsed input based on the delimiters given.
+     * Multiple delimiters can be used to parse an input.
+     * 
+     * @param input String to be parsed.
+     * @param delimiters One or more delimiters to be used to parse the input.
+     * @return String[] containing the tokens of the input.
+     * @throws ChatterBoxException If delimiter does not exist within the input string.
+     */
     private static String[] parseInput(String input, String... delimiters) throws ChatterBoxException {
         String[] parts = new String[delimiters.length + 1];
         int lastIndex = 0;
@@ -174,6 +255,12 @@ public class CommandProcessor {
         return parts;
     }
 
+    /**
+     * Adds the given task into the storage object.
+     * 
+     * @param storage Storage object in which Task objects are stored in.
+     * @param task Task object that is to be stored in the storage object.
+     */
     private static void addTask(Storage<Task> storage, Task task) {
         storage.addItem(task);
         MemoryStorage.saveTask(task);
