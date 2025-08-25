@@ -21,6 +21,14 @@ public class MemoryStorage {
         }
     }
 
+    /**
+     * Creates and stores tasks stored in the hard drive into the storage object.
+     * If memory file is corrupted, task is skipped and removed from memory.
+     * Alerts user via the command line interface if data is corrupted.
+     * If file is corrupted, a temporary memory file is generated for the user.
+     * 
+     * @param storage Storage object in which Task objects are stored in.
+     */
     public static void loadTasks(Storage<Task> storage) {
         File tempFile = new File("./data/tasks_tmp.txt");
         boolean isCorruptedFile = false;
@@ -52,6 +60,14 @@ public class MemoryStorage {
         }
     } 
 
+    /**
+     * Updates the task's completion status in memory.
+     * Task is accessed based on its index in the virtual storage object.
+     * If index is invalid, memory will not be updated.
+     * 
+     * @param index Index in which the task is stored in memory.
+     * @param isCompleted Completion status to set the selected task to.
+     */
     public static void updateTaskCompletion(int index, boolean isCompleted) {
         File tempFile = new File("./data/tasks_tmp.txt");
         int currentLine = 0;
@@ -82,6 +98,12 @@ public class MemoryStorage {
         }
     }
     
+    /**
+     * Adds and stores a new task into memory.
+     * Warns the user via the command line interface if task cannot be saved.
+     * 
+     * @param task Task to be saved into memory.
+     */
     public static void saveTask(Task task) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(taskFile, true))) {
             String line = task.getTaskSymbol() + " | " 
@@ -102,6 +124,13 @@ public class MemoryStorage {
         }
     }
 
+    /**
+     * Deletes the task that is stored in memory.
+     * Task to be deleted is accessed based on its index in the virtual storage object.
+     * No task will be deleted if index is invalid.
+     * 
+     * @param index Index in which the task is stored in the virtual storage object.
+     */
     public static void deleteTask(int index) {
        File tempFile = new File("./data/tasks_tmp.txt");
        int currentLine = 0;
@@ -133,6 +162,13 @@ public class MemoryStorage {
         } 
     }
 
+    /**
+     * Creates a task object from memory and adds it into the storage object.
+     * If memory is corrupted, the task object is not constructed.
+     * 
+     * @param storage Storage object in which Task objects are stored in.
+     * @param input Data stored in the memory that corresponds to a task object.
+     */
     private static boolean initializeTask(Storage<Task> storage, String input) {
         try {
             String[] tokens = input.split(" \\| ");
@@ -171,6 +207,14 @@ public class MemoryStorage {
         }
     }
 
+    /**
+     * Returns a String to be stored in memory for a task.
+     * The String returned depends on the completion status given.
+     * 
+     * @param task Task to be serialized and stored in the memory.
+     * @param isCompleted Completion status of the corresponding task.
+     * @return String that contains the serialized task information.
+     */
     private static String updateTask(String task, boolean isCompleted) {
         String[] tokens = task.split(" \\| ");
         tokens[1] = isCompleted ? "1" : "0";

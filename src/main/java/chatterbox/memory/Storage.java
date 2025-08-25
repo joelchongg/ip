@@ -11,6 +11,10 @@ public class Storage<T extends Task> {
         this.storage = new ArrayList<>();
     }
 
+    /**
+     * Outputs to the command line interface the items stored in a numbered list format.
+     * Output is empty if storage is empty
+     */
     public void displayItems() {
         for (int index = 1; index <= storage.size(); ++index) {
             System.out.println(index + "." + this.storage.get(index - 1));
