@@ -3,9 +3,7 @@ package chatterbox.command;
 import chatterbox.memory.Storage;
 import chatterbox.task.Task;
 import chatterbox.task.TodoTask;
-import chatterbox.testutils.OutputCaptor;
 
-import java.io.ByteArrayInputStream;
 import java.util.Scanner;
 import org.junit.jupiter.api.Test;
 
@@ -28,44 +26,38 @@ public class CommandProcessorTest {
     public void processCommand_addTodo_addsTaskToStorage() {
         Storage<Task> storage = new Storage<>();
         String userInput = "Read book\n";
-        Scanner scanner = new Scanner(new ByteArrayInputStream(userInput.getBytes()));
+        Scanner scanner = new Scanner(userInput);
 
-        OutputCaptor captor = new OutputCaptor();
-        String output = captor.capture(() -> 
-                CommandProcessor.processCommand(storage, scanner, "todo"));
+        String response = CommandProcessor.processCommand(storage, scanner, "todo");
 
 
         assertEquals(1, storage.size());
         Task task = storage.getItem(0);
         assertTrue(task instanceof TodoTask);
         assertEquals("Read book", task.getTaskDescription());
-        assertTrue(output.contains("Got it. I've added this task:"));
-        assertTrue(output.contains("Read book"));
+        assertTrue(response.contains("Got it. I've added this task:"));
+        assertTrue(response.contains("Read book"));
     }
 
     @Test
     public void processCommand_emptyTodoDescription_displayErrorMessage() {
         Storage<Task> storage = new Storage<>();
-        Scanner scanner = new Scanner(new ByteArrayInputStream("\n".getBytes()));
-        OutputCaptor captor = new OutputCaptor();
+        Scanner scanner = new Scanner("\n");
 
-        String output = captor.capture(() ->
-                CommandProcessor.processCommand(storage, scanner, "todo"));
+        String response = CommandProcessor.processCommand(storage, scanner, "todo");
         
         assertEquals(0, storage.size());
-        assertEquals("ChatterBox: Uh oh! You forgot to include a description for your todo task! Try again!", 
-                      output.trim());
+        assertEquals("Uh oh! You forgot to include a description for your todo task! Try again!",
+                response.trim());
     }
 
     @Test
     public void processCommand_invalidCommand_displayErrorMessage() {
         Storage<Task> storage = new Storage<>();
-        Scanner scanner = new Scanner(new ByteArrayInputStream("\n".getBytes()));
+        Scanner scanner = new Scanner("\n");
 
-        OutputCaptor captor = new OutputCaptor();
-        String output = captor.capture(() ->
-                CommandProcessor.processCommand(storage, scanner, "foobar"));
+        String response = CommandProcessor.processCommand(storage, scanner, "foobar");
         
-        assertEquals("ChatterBox: Invalid Command!", output.trim());
+        assertEquals("Invalid Command!", response.trim());
     }
 }

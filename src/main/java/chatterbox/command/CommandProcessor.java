@@ -4,12 +4,12 @@ import chatterbox.exception.ChatterBoxException;
 import chatterbox.memory.Storage;
 import chatterbox.memory.MemoryStorage;
 import chatterbox.task.*;
-import chatterbox.ui.ChatterBoxUI;
 
 import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -61,7 +61,7 @@ public class CommandProcessor {
      * Returns a boolean depending if command is valid.
      * 
      * @param command String for a command.
-     * @return boolean
+     * @return boolean indicating whether the given input is a command
      */
     public static boolean isCommand(String command) {
         return commands.containsKey(command);
@@ -108,6 +108,8 @@ public class CommandProcessor {
             response = "Invalid Input! Try: mark <index>\n";
         } catch (IndexOutOfBoundsException e) {
             response = "Invalid index! You can only mark tasks between 1 and " + storage.size() + ".\n";
+        } catch (NoSuchElementException e) {
+            response = "Uh oh! You forgot to input an index! Try: mark <index>\n";
         }
 
         return response;
@@ -139,6 +141,8 @@ public class CommandProcessor {
             response = "Invalid Input! Try: unmark <index>\n";
         } catch (IndexOutOfBoundsException e) {
             response = "Invalid Index! You can only unmark tasks between 1 and " + storage.size() + ".\n";
+        } catch (NoSuchElementException e) {
+            response = "Uh oh! You forgot to input an index! Try: unmark <index>\n";
         }
 
         return response;
@@ -275,6 +279,8 @@ public class CommandProcessor {
             response = "Invalid Input! Try: delete <index>\n";
         } catch (IndexOutOfBoundsException e) {
             response = "Invalid index! You can only delete tasks between 1 and " + storage.size() + ".\n";
+        } catch (NoSuchElementException e) {
+            response = "Uh oh! You forgot to input an index! Try: delete <index>\n";
         }
 
         return response;
