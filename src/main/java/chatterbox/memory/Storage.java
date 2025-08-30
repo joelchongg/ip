@@ -22,12 +22,17 @@ public class Storage<T extends Task> {
     /**
      * Outputs to the command line interface the items stored in a numbered list format.
      * Output is empty if storage is empty
+     *
+     * @return Returns a string representing {@code Task} objects in {@code Storage} 
      */
-    public void displayItems() {
+    public String displayItems() {
+        String response = "";
+
         for (int index = 1; index <= storage.size(); ++index) {
-            System.out.println(index + "." + this.storage.get(index - 1));
+            response += index + "." + this.storage.get(index - 1) + '\n';
         }
-        System.out.println();
+
+        return response;
     }
 
     /**

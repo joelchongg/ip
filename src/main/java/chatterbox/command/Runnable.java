@@ -11,7 +11,9 @@ import java.util.Scanner;
  * from a {@link Scanner} and may manipulate a {@link Storage} of {@link Task} 
  * objects. Implementing classes encapsulate specific commands recognized by 
  * {@link chatterbox.command.CommandProcessor}.
+ * 
+ * <p>A {@code Runnable} will return a String as a response.
  */
 public interface Runnable {
-    void run(Storage<Task> s, Scanner sc);
+    String run(Storage<Task> s, Scanner sc);
 }
