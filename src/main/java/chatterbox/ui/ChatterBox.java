@@ -54,9 +54,11 @@ public class ChatterBox {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
+        /*
         initialize();
         ChatterBoxUI.greet();
         run();
         ChatterBoxUI.farewell();
+        */
     }
 }
