@@ -1,17 +1,18 @@
 package chatterbox.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.ByteArrayInputStream;
+import java.util.Scanner;
+
+import org.junit.jupiter.api.Test;
+
 import chatterbox.memory.Storage;
 import chatterbox.task.Task;
 import chatterbox.task.TodoTask;
 import chatterbox.testutils.OutputCaptor;
-
-import java.io.ByteArrayInputStream;
-import java.util.Scanner;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommandProcessorTest {
     @Test
@@ -19,7 +20,7 @@ public class CommandProcessorTest {
         assertTrue(CommandProcessor.isCommand("todo"));
     }
 
-    @Test 
+    @Test
     public void isNotCommand_foobar_returnFalse() {
         assertFalse(CommandProcessor.isCommand("foobar"));
     }
@@ -31,7 +32,7 @@ public class CommandProcessorTest {
         Scanner scanner = new Scanner(new ByteArrayInputStream(userInput.getBytes()));
 
         OutputCaptor captor = new OutputCaptor();
-        String output = captor.capture(() -> 
+        String output = captor.capture(() ->
                 CommandProcessor.processCommand(storage, scanner, "todo"));
 
 
@@ -51,9 +52,9 @@ public class CommandProcessorTest {
 
         String output = captor.capture(() ->
                 CommandProcessor.processCommand(storage, scanner, "todo"));
-        
+
         assertEquals(0, storage.size());
-        assertEquals("ChatterBox: Uh oh! You forgot to include a description for your todo task! Try again!", 
+        assertEquals("ChatterBox: Uh oh! You forgot to include a description for your todo task! Try again!",
                       output.trim());
     }
 
@@ -65,7 +66,7 @@ public class CommandProcessorTest {
         OutputCaptor captor = new OutputCaptor();
         String output = captor.capture(() ->
                 CommandProcessor.processCommand(storage, scanner, "foobar"));
-        
+
         assertEquals("ChatterBox: Invalid Command!", output.trim());
     }
 }

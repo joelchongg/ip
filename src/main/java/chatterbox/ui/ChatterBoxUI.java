@@ -1,7 +1,7 @@
 package chatterbox.ui;
 
 /**
- * Provides console-based interaction for the ChatterBox application. 
+ * Provides console-based interaction for the ChatterBox application.
  */
 public class ChatterBoxUI {
     private static String botName = "\nChatterBox: ";
@@ -23,7 +23,7 @@ public class ChatterBoxUI {
 
     /**
      * Prints a reply message to the user.
-     * @param message The string to be displayed after the bot name.
+     * @param message The string to be displayed after the bot name
      */
     public static void reply(String message) {
         System.out.println(botName + message);

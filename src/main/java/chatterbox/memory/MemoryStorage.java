@@ -1,28 +1,31 @@
 package chatterbox.memory;
 
-import chatterbox.exception.ChatterBoxException;
-import chatterbox.task.*;
-import chatterbox.ui.ChatterBoxUI;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import chatterbox.exception.ChatterBoxException;
+import chatterbox.task.DeadlineTask;
+import chatterbox.task.EventTask;
+import chatterbox.task.Task;
+import chatterbox.task.TodoTask;
+import chatterbox.ui.ChatterBoxUI;
+
 /**
  * Handles persistent storage of {@link Task} objects for the ChatterBox application.
- * 
+ *
  * <p>The {@code MemoryStorage} class provides methods to load tasks from disk into
  * memory, save new tasks, update completion status, and delete tasks. It ensures data
  * integrity by detecting corrupted files and creating temporary memory files if needed.
  * All methods are static and operate on a shared file located at {@code ./data/tasks.txt}.
- * 
+ *
  * <p>Tasks are serialized in a simple text format and reconstructed into their corresponding
  * {@link Task} subclasses when loaded.
  */
 public class MemoryStorage {
-    private static File taskFile = new File("./data/tasks.txt");    
+    private static File taskFile = new File("./data/tasks.txt");
 
     static {
         try {
@@ -38,8 +41,8 @@ public class MemoryStorage {
      * If memory file is corrupted, task is skipped and removed from memory.
      * Alerts user via the command line interface if data is corrupted.
      * If file is corrupted, a temporary memory file is generated for the user.
-     * 
-     * @param storage Storage object in which Task objects are stored in.
+     *
+     * @param storage Storage object in which Task objects are stored in
      */
     public static void loadTasks(Storage<Task> storage) {
         File tempFile = new File("./data/tasks_tmp.txt");
@@ -70,15 +73,15 @@ public class MemoryStorage {
         } catch (IOException e) {
             System.out.println("Unable to find task file from memory!");
         }
-    } 
+    }
 
     /**
      * Updates the task's completion status in memory.
      * Task is accessed based on its index in the virtual storage object.
      * If index is invalid, memory will not be updated.
-     * 
-     * @param index Index in which the task is stored in memory.
-     * @param isCompleted Completion status to set the selected task to.
+     *
+     * @param index Index in which the task is stored in memory
+     * @param isCompleted Completion status to set the selected task to
      */
     public static void updateTaskCompletion(int index, boolean isCompleted) {
         File tempFile = new File("./data/tasks_tmp.txt");
@@ -105,24 +108,24 @@ public class MemoryStorage {
             System.out.println("Unable to delete original file to update task completion!");
             return;
         }
-        
+
         if (!tempFile.renameTo(taskFile)) {
             System.out.println("Could not rename temp file to update task completion!");
         }
     }
-    
+
     /**
      * Adds and stores a new task into memory.
      * Warns the user via the command line interface if task cannot be saved.
-     * 
-     * @param task Task to be saved into memory.
+     *
+     * @param task Task to be saved into memory
      */
     public static void saveTask(Task task) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(taskFile, true))) {
-            String line = task.getTaskSymbol() + " | " 
-                    + (task.getStatusIcon().equals("X") ? "1" : "0") + " | " 
+            String line = task.getTaskSymbol() + " | "
+                    + (task.getStatusIcon().equals("X") ? "1" : "0") + " | "
                     + task.getTaskDescription();
-            
+
             if (task instanceof DeadlineTask) {
                 DeadlineTask tempTask = (DeadlineTask) task;
                 line += " | " + tempTask.serializeDeadline();
@@ -141,15 +144,15 @@ public class MemoryStorage {
      * Deletes the task that is stored in memory.
      * Task to be deleted is accessed based on its index in the virtual storage object.
      * No task will be deleted if index is invalid.
-     * 
-     * @param index Index in which the task is stored in the virtual storage object.
+     *
+     * @param index Index in which the task is stored in the virtual storage object
      */
     public static void deleteTask(int index) {
-       File tempFile = new File("./data/tasks_tmp.txt");
-       int currentLine = 0;
+        File tempFile = new File("./data/tasks_tmp.txt");
+        int currentLine = 0;
 
         try (Scanner scanner = new Scanner(taskFile);
-             PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
+            PrintWriter writer = new PrintWriter(new FileWriter(tempFile))) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -170,18 +173,18 @@ public class MemoryStorage {
             System.out.println("Unable to delete original file to update task deletion!");
             return;
         }
-        
+
         if (!tempFile.renameTo(taskFile)) {
             System.out.println("Could not rename temp file to update task deletion!");
-        } 
+        }
     }
 
     /**
      * Creates a task object from memory and adds it into the storage object.
      * If memory is corrupted, the task object is not constructed.
-     * 
-     * @param storage Storage object in which Task objects are stored in.
-     * @param input Data stored in the memory that corresponds to a task object.
+     *
+     * @param storage Storage object in which Task objects are stored in
+     * @param input Data stored in the memory that corresponds to a task object
      */
     private static boolean initializeTask(Storage<Task> storage, String input) {
         try {
@@ -189,7 +192,7 @@ public class MemoryStorage {
             char taskType = tokens[0].charAt(0);
             String completed = tokens[1];
             String description = tokens[2];
-            
+
             boolean isCompleted;
             if (completed.equals("1")) {
                 isCompleted = true;
@@ -212,7 +215,7 @@ public class MemoryStorage {
                 String endTime = tokens[4];
                 storage.addItem(new EventTask(description, startTime, endTime, isCompleted));
                 return true;
-            
+
             default:
                 return false;
             }
@@ -224,15 +227,15 @@ public class MemoryStorage {
     /**
      * Returns a String to be stored in memory for a task.
      * The String returned depends on the completion status given.
-     * 
-     * @param task Task to be serialized and stored in the memory.
-     * @param isCompleted Completion status of the corresponding task.
-     * @return String that contains the serialized task information.
+     *
+     * @param task Task to be serialized and stored in the memory
+     * @param isCompleted Completion status of the corresponding task
+     * @return String that contains the serialized task information
      */
     private static String updateTask(String task, boolean isCompleted) {
         String[] tokens = task.split(" \\| ");
         tokens[1] = isCompleted ? "1" : "0";
-        
+
         return String.join(" | ", tokens);
     }
 }

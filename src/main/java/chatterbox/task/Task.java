@@ -2,10 +2,10 @@ package chatterbox.task;
 
 /**
  * Represents an abstract task in the ChatterBox application.
- * 
+ *
  * <p>A task has a description, a completion status, and a symbol
  * identifying its type. Subclasses define specific types of tasks
- * (e.g deadline, event, todo) by extending this class 
+ * (e.g deadline, event, todo) by extending this class
  * and providing additional behaviour or attributes
  */
 public abstract class Task {
@@ -13,12 +13,28 @@ public abstract class Task {
     private boolean isCompleted;
     private char symbol;
 
+    /**
+     * Creates a new Task with the specified description and symbol.
+     *
+     * The task is initially incomplete.
+     *
+     * @param description the description of the task.
+     * @param symbol the character representing the task type.
+     */
     public Task(String description, char symbol) {
         this.description = description;
         this.isCompleted = false;
         this.symbol = symbol;
     }
 
+    /**
+     * Creates a new Task with the specified description, symbol
+     * and completion status.
+     *
+     * @param description the description of the task.
+     * @param symbol the character representing the task type.
+     * @param isCompleted whether the task is initially completed.
+     */
     public Task(String description, char symbol, boolean isCompleted) {
         this(description, symbol);
         this.isCompleted = isCompleted;
@@ -27,7 +43,7 @@ public abstract class Task {
     public boolean isCompleted() {
         return this.isCompleted;
     }
-    
+
     public void setCompleted() {
         this.isCompleted = true;
     }

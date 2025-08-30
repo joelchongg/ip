@@ -1,12 +1,12 @@
 package chatterbox.task;
 
-import java.time.DateTimeException;
-
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.time.DateTimeException;
+
+import org.junit.jupiter.api.Test;
 
 public class DeadlineTaskTest {
     @Test
@@ -15,7 +15,7 @@ public class DeadlineTaskTest {
         assertThrows(DateTimeException.class, () -> new DeadlineTask("deadline task", invalidDateTimeString));
     }
 
-    @Test 
+    @Test
     public void constructor_validDateTimeArgument_noExceptionThrown() {
         String validDateTimeString = "18-12-2025 18:00";
         assertDoesNotThrow(() -> new DeadlineTask("deadline task", validDateTimeString));
@@ -32,7 +32,7 @@ public class DeadlineTaskTest {
         DeadlineTask task = new DeadlineTask("deadline task", "25-08-2025 16:30");
         assertEquals("Aug 25 2025 16:30", task.getFormattedDeadline());
     }
-    
+
     @Test
     void toString_incompleteTask_returnsCorrectString() {
         DeadlineTask task = new DeadlineTask("Do project", "25-08-2025 16:30");

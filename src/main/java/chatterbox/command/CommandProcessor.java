@@ -1,27 +1,30 @@
 package chatterbox.command;
 
-import chatterbox.exception.ChatterBoxException;
-import chatterbox.memory.Storage;
-import chatterbox.memory.MemoryStorage;
-import chatterbox.task.*;
-import chatterbox.ui.ChatterBoxUI;
-
 import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import chatterbox.exception.ChatterBoxException;
+import chatterbox.memory.MemoryStorage;
+import chatterbox.memory.Storage;
+import chatterbox.task.DeadlineTask;
+import chatterbox.task.EventTask;
+import chatterbox.task.Task;
+import chatterbox.task.TodoTask;
+import chatterbox.ui.ChatterBoxUI;
+
 /**
  * Processes and executes user commands in the ChatterBox application.
- * 
+ *
  * <p>The {@code CommandProcessor} class maps user-entered command strings
- * to specific actions, such as adding, marking, unmarking, deleting, and 
- * searching tasks. Commands are validated and executed using the appropriate 
- * {@link Runnable} implementation. All task modifications are reflected in 
+ * to specific actions, such as adding, marking, unmarking, deleting, and
+ * searching tasks. Commands are validated and executed using the appropriate
+ * {@link Runnable} implementation. All task modifications are reflected in
  * both memory and persistent storage.
- * 
- * <p>Common commands include {@code list}, {@code mark}, {@code unmark}, 
+ *
+ * <p>Common commands include {@code list}, {@code mark}, {@code unmark},
  * {@code todo}, {@code deadline}, {@code event}, {@code delete}, and {@code find}.
  */
 public class CommandProcessor {
@@ -41,10 +44,10 @@ public class CommandProcessor {
     /**
      * Processes the command given in the parameter.
      * If the command is invalid, no changes are made and "Invalid Command" is seen in output.
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from command line interface.
-     * @param command Command to be processed.
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from command line interface
+     * @param command Command to be processed
      */
     public static void processCommand(Storage<Task> storage, Scanner scanner, String command) {
         if (isCommand(command)) {
@@ -57,8 +60,8 @@ public class CommandProcessor {
 
     /**
      * Returns a boolean depending if command is valid.
-     * 
-     * @param command String for a command.
+     *
+     * @param command String for a command
      * @return boolean
      */
     public static boolean isCommand(String command) {
@@ -68,9 +71,9 @@ public class CommandProcessor {
     /**
      * Outputs to command line interface tasks in the storage in a numbered list.
      * If storage is empty, no output is produced.
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from command line interface.
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from command line interface
      */
     private static void list(Storage<Task> storage, Scanner scanner) {
         ChatterBoxUI.reply("Here are the tasks in your list:");
@@ -79,13 +82,13 @@ public class CommandProcessor {
     }
 
     /**
-     * Takes in input from command line interface and 
+     * Takes in input from command line interface and
      * marks the task at the corresponding index from input.
      * Subsequent input should be an integer denoting the index of the task
      * in the storage object.
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from command line interface.
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from command line interface
      */
     private static void mark(Storage<Task> storage, Scanner scanner) {
         try {
@@ -111,9 +114,9 @@ public class CommandProcessor {
      * marks the task at the corresponding index from input.
      * Subsequent input should be an integer denoting the index of the task
      * in the storage object.
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from command line interface.
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from command line interface
      */
     private static void unmark(Storage<Task> storage, Scanner scanner) {
         try {
@@ -137,10 +140,10 @@ public class CommandProcessor {
     /**
      * Creates and adds a todo Task object into the storage.
      * Description for the task object should be inputted after the 'todo' command.
-     * Input Format: todo <description>
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from command line interface.
+     * <p>Input Format: {@code todo <description>}
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from command line interface
      */
     private static void addTodo(Storage<Task> storage, Scanner scanner) {
         try {
@@ -162,60 +165,65 @@ public class CommandProcessor {
     /**
      * Creates and adds a deadline Task object into the storage.
      * Description for the task object should be inputted after the 'deadline' command.
-     * Input Format: deadline <description> /by <LocalDateTime>
-     * LocalDateTime format should follow: dd-mm-yyyy HH:mm
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from command line interface.
+     * <p>Input Format: {@code deadline <description> /by <LocalDateTime>}
+     * <p>LocalDateTime format should follow: dd-mm-yyyy HH:mm
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from command line interface
      */
     private static void addDeadline(Storage<Task> storage, Scanner scanner) {
         try {
             String input = scanner.nextLine().trim();
-            
+
             if (input.isEmpty()) {
                 throw new ChatterBoxException(
                     "Uh oh! You forgot to include a description for your deadline task! Try again!"
                 );
             }
-            
+
             String[] tokens = parseInput(input, " /by ");
-            
+
             if (tokens.length != 2) {
                 throw new ChatterBoxException(
                     "Uh oh! You did not input your deadline task correctly! Try: deadline <description> /by <deadline>"
                 );
             }
-    
+
             Task newTask = new DeadlineTask(tokens[0], tokens[1]);
             addTask(storage, newTask);
         } catch (ChatterBoxException e) {
             ChatterBoxUI.reply(e.getMessage());
-        } catch(DateTimeException e) {
-            ChatterBoxUI.reply("Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!");
+        } catch (DateTimeException e) {
+            ChatterBoxUI.reply(
+                "Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!"
+            );
         }
     }
-    
+
     /**
      * Creates and adds a event Task object into the storage.
      * Description for the task object should be inputted after the 'event' command.
-     * Input Format: event <description> from: <time> to: <time>
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from command line interface.
+     * <p>Input Format: {@code event <description> from: <time> to: <time>}
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from command line interface
      */
     private static void addEvent(Storage<Task> storage, Scanner scanner) {
         try {
             String input = scanner.nextLine().trim();
 
             if (input.isEmpty()) {
-                throw new ChatterBoxException("Uh oh! You forgot to include a description for your event task! Try again!");
+                throw new ChatterBoxException(
+                    "Uh oh! You forgot to include a description for your event task! Try again!"
+                );
             }
 
             String[] tokens = parseInput(input, " /from ", " /to ");
 
             if (tokens.length != 3) {
                 throw new ChatterBoxException(
-                    "Uh oh! You did not input your event task correctly! Try: event <description> /from <time> /to <time>"
+                    "Uh oh! You did not input your event task correctly!"
+                    + "Try: event <description> /from <time> /to <time>"
                 );
             }
 
@@ -229,10 +237,10 @@ public class CommandProcessor {
     /**
      * Deletes a task from the storage
      * The task deleted corresponds to the index inputted after the 'delete' command.
-     * Input Format: delete <index>
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from command line interface.
+     * <p>Input Format: {@code delete <index>}
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from command line interface
      */
     private static void delete(Storage<Task> storage, Scanner scanner) {
         try {
@@ -255,42 +263,42 @@ public class CommandProcessor {
     /**
      * Finds tasks that contain a specific description and outputs it into the command line interface.
      * Description to search for should be inputted after the 'find' command.
-     * Format: find <description>
-     * 
-     * @param storage Storage object in which Task objects are stored.
-     * @param scanner Scanner used to read input from the command line interface.
+     * <p> Input Format: {@code find <description>}
+     *
+     * @param storage Storage object in which Task objects are stored
+     * @param scanner Scanner used to read input from the command line interface
      */
     private static void find(Storage<Task> storage, Scanner scanner) {
         String input = scanner.nextLine().trim();
-        
+
         if (input.isEmpty()) {
             ChatterBoxUI.reply("Uh oh! You forgot to include a description to search for! Try Again!");
             return;
         }
-        
+
         ArrayList<Task> tasks = storage.searchTasksByDescription(input);
-        
+
         if (tasks.isEmpty()) {
             ChatterBoxUI.reply("There are no items in your list with that description.");
             return;
         }
-        
+
         ChatterBoxUI.reply("Here are the matching tasks in your list:");
-        
+
         for (int index = 1; index <= tasks.size(); ++index) {
             System.out.println(index + "." + tasks.get(index - 1));
         }
         System.out.println();
     }
-    
+
     /**
      * Returns a String[] that contains the parsed input based on the delimiters given.
      * Multiple delimiters can be used to parse an input.
-     * 
-     * @param input String to be parsed.
-     * @param delimiters One or more delimiters to be used to parse the input.
-     * @return String[] containing the tokens of the input.
-     * @throws ChatterBoxException If delimiter does not exist within the input string.
+     *
+     * @param input String to be parsed
+     * @param delimiters One or more delimiters to be used to parse the input
+     * @return String[] containing the tokens of the input
+     * @throws ChatterBoxException If delimiter does not exist within the input string
      */
     private static String[] parseInput(String input, String... delimiters) throws ChatterBoxException {
         String[] parts = new String[delimiters.length + 1];
@@ -311,9 +319,9 @@ public class CommandProcessor {
 
     /**
      * Adds the given task into the storage object.
-     * 
-     * @param storage Storage object in which Task objects are stored in.
-     * @param task Task object that is to be stored in the storage object.
+     *
+     * @param storage Storage object in which Task objects are stored in
+     * @param task Task object that is to be stored in the storage object
      */
     private static void addTask(Storage<Task> storage, Task task) {
         storage.addItem(task);

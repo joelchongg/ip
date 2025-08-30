@@ -1,10 +1,11 @@
 package chatterbox.ui;
 
+import java.util.Scanner;
+
 import chatterbox.command.CommandProcessor;
 import chatterbox.memory.MemoryStorage;
 import chatterbox.memory.Storage;
 import chatterbox.task.Task;
-import java.util.Scanner;
 
 /**
  * Main entry point for the ChatterBox application.
@@ -18,9 +19,9 @@ public class ChatterBox {
 
         while (true) {
             System.out.print("Enter Input: ");
-            
+
             if (!scanner.hasNext()) {
-                break;    
+                break;
             }
 
             String userInput = scanner.next();
@@ -31,7 +32,7 @@ public class ChatterBox {
 
             if (!CommandProcessor.isCommand(userInput)) {
                 ChatterBoxUI.reply("Invalid command! Try Again!");
-                scanner.nextLine();     // Clear input buffer
+                scanner.nextLine(); // Clear input buffer
                 continue;
             }
 
@@ -47,10 +48,10 @@ public class ChatterBox {
 
     /**
      * Starts the ChatterBox application.
-     * 
+     *
      * This method initializes stored data, if any, displays a greeting message,
      * enters the main input loop, and ends with a farewell.
-     * 
+     *
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
