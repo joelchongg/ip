@@ -11,37 +11,29 @@ import java.util.Scanner;
  */
 public class ChatterBox {
 
-    private static Storage<Task> storage = new Storage<>();
+    private Storage<Task> storage = new Storage<>();
 
-    private static void run() {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            System.out.print("Enter Input: ");
+    public String run(String input) {
+        Scanner scanner = new Scanner(input);
             
-            if (!scanner.hasNext()) {
-                break;    
-            }
-
-            String userInput = scanner.next();
-
-            if (userInput.equals("bye")) {
-                break;
-            }
-
-            if (!CommandProcessor.isCommand(userInput)) {
-                ChatterBoxUI.reply("Invalid command! Try Again!");
-                scanner.nextLine();     // Clear input buffer
-                continue;
-            }
-
-            CommandProcessor.processCommand(storage, scanner, userInput);
+        if (!scanner.hasNext()) {
+            return "You did not input any command! Try again!";
         }
 
-        scanner.close();
+        String userInput = scanner.next();
+
+        if (!CommandProcessor.isCommand(userInput)) {
+            return "Invalid command! Try Again!";
+        }
+
+        String result = CommandProcessor.processCommand(storage, scanner, userInput);
+        return result;
     }
 
-    private static void initialize() {
+    /**
+     * Initializes {@code Task} objects from memory to virtual memory.
+     */
+    public void initialize() {
         MemoryStorage.loadTasks(storage);
     }
 

@@ -45,13 +45,15 @@ public class CommandProcessor {
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @param command Command to be processed.
+     * @return Returns a string to be shown in response to user input
      */
-    public static void processCommand(Storage<Task> storage, Scanner scanner, String command) {
+    public static String processCommand(Storage<Task> storage, Scanner scanner, String command) {
         if (isCommand(command)) {
             Runnable cmd = commands.get(command);
-            cmd.run(storage, scanner);
+            String response = cmd.run(storage, scanner);
+            return response;
         } else {
-            ChatterBoxUI.reply("Invalid Command!");
+            return "Invalid Command!";
         }
     }
 
@@ -71,11 +73,13 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void list(Storage<Task> storage, Scanner scanner) {
-        ChatterBoxUI.reply("Here are the tasks in your list:");
-        storage.displayItems();
-        scanner.nextLine();
+    private static String list(Storage<Task> storage, Scanner scanner) {
+        String response = "Here are the tasks in your list:\n";
+        response += storage.displayItems();
+
+        return response;
     }
 
     /**
@@ -86,8 +90,11 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void mark(Storage<Task> storage, Scanner scanner) {
+    private static String mark(Storage<Task> storage, Scanner scanner) {
+        String response = "";
+
         try {
             int index = scanner.nextInt();
             Task item = storage.getItem(index - 1);
@@ -95,15 +102,15 @@ public class CommandProcessor {
             item.setCompleted();
             MemoryStorage.updateTaskCompletion(index - 1, true);
 
-            ChatterBoxUI.reply("Nice! I've marked this task as done:");
-            System.out.println(item);
+            response += "Nice! I've marked this task as done:\n";
+            response += item;
         } catch (InputMismatchException e) {
-            ChatterBoxUI.reply("Invalid Input! Try: mark <index>");
+            response = "Invalid Input! Try: mark <index>\n";
         } catch (IndexOutOfBoundsException e) {
-            ChatterBoxUI.reply("Invalid index! You can only mark tasks between 1 and " + storage.size() + ".");
-        } finally {
-            scanner.nextLine();
+            response = "Invalid index! You can only mark tasks between 1 and " + storage.size() + ".\n";
         }
+
+        return response;
     }
 
     /**
@@ -114,8 +121,11 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void unmark(Storage<Task> storage, Scanner scanner) {
+    private static String unmark(Storage<Task> storage, Scanner scanner) {
+        String response = "";
+
         try {
             int index = scanner.nextInt();
             Task item = storage.getItem(index - 1);
@@ -123,15 +133,15 @@ public class CommandProcessor {
             item.setIncomplete();
             MemoryStorage.updateTaskCompletion(index - 1, false);
 
-            ChatterBoxUI.reply("OK, I've marked this task as not done yet:");
-            System.out.println(item);
+            response += "OK, I've marked this task as not done yet:\n";
+            response += item;
         } catch (InputMismatchException e) {
-            ChatterBoxUI.reply("Invalid Input! Try: unmark <index>");
+            response = "Invalid Input! Try: unmark <index>\n";
         } catch (IndexOutOfBoundsException e) {
-            ChatterBoxUI.reply("Invalid Index! You can only unmark tasks between 1 and " + storage.size() + ".");
-        } finally {
-            scanner.nextLine();
+            response = "Invalid Index! You can only unmark tasks between 1 and " + storage.size() + ".\n";
         }
+
+        return response;
     }
 
     /**
@@ -141,8 +151,11 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void addTodo(Storage<Task> storage, Scanner scanner) {
+    private static String addTodo(Storage<Task> storage, Scanner scanner) {
+        String response = "";
+
         try {
             String token = scanner.nextLine().trim();
 
@@ -153,10 +166,12 @@ public class CommandProcessor {
             }
 
             Task newTask = new TodoTask(token);
-            addTask(storage, newTask);
+            response = addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            ChatterBoxUI.reply(e.getMessage());
+            response = e.getMessage();
         }
+
+        return response;
     }
 
     /**
@@ -167,8 +182,11 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void addDeadline(Storage<Task> storage, Scanner scanner) {
+    private static String addDeadline(Storage<Task> storage, Scanner scanner) {
+        String response = "";
+        
         try {
             String input = scanner.nextLine().trim();
             
@@ -187,12 +205,14 @@ public class CommandProcessor {
             }
     
             Task newTask = new DeadlineTask(tokens[0], tokens[1]);
-            addTask(storage, newTask);
+            response = addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            ChatterBoxUI.reply(e.getMessage());
+            response = e.getMessage() + '\n';
         } catch(DateTimeException e) {
-            ChatterBoxUI.reply("Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!");
+            response ="Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!\n";
         }
+
+        return response;
     }
     
     /**
@@ -202,8 +222,11 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void addEvent(Storage<Task> storage, Scanner scanner) {
+    private static String addEvent(Storage<Task> storage, Scanner scanner) {
+        String response = "";
+
         try {
             String input = scanner.nextLine().trim();
 
@@ -220,10 +243,12 @@ public class CommandProcessor {
             }
 
             Task newTask = new EventTask(tokens[0], tokens[1], tokens[2]);
-            addTask(storage, newTask);
+            response = addTask(storage, newTask);
         } catch (ChatterBoxException e) {
-            ChatterBoxUI.reply(e.getMessage());
+            response = e.getMessage() + '\n';
         }
+
+        return response;
     }
 
     /**
@@ -233,23 +258,26 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void delete(Storage<Task> storage, Scanner scanner) {
+    private static String delete(Storage<Task> storage, Scanner scanner) {
+        String response = "";
+        
         try {
             int index = scanner.nextInt();
             Task deleted = storage.removeItem(index - 1);
             MemoryStorage.deleteTask(index - 1);
 
-            ChatterBoxUI.reply("Noted. I've removed this task:");
-            System.out.println(deleted);
-            ChatterBoxUI.reply("Now you have " + storage.size() + " tasks in the list.");
+            response += ("Noted. I've removed this task:\n");
+            response += deleted + "\n";
+            response += "Now you have " + storage.size() + " tasks in the list.\n";
         } catch (InputMismatchException e) {
-            ChatterBoxUI.reply("Invalid Input! Try: delete <index>");
+            response = "Invalid Input! Try: delete <index>\n";
         } catch (IndexOutOfBoundsException e) {
-            ChatterBoxUI.reply("Invalid index! You can only delete tasks between 1 and " + storage.size() + ".");
-        } finally {
-            scanner.nextLine();
+            response = "Invalid index! You can only delete tasks between 1 and " + storage.size() + ".\n";
         }
+
+        return response;
     }
 
     /**
@@ -259,28 +287,29 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from the command line interface.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void find(Storage<Task> storage, Scanner scanner) {
+    private static String find(Storage<Task> storage, Scanner scanner) {
         String input = scanner.nextLine().trim();
         
         if (input.isEmpty()) {
-            ChatterBoxUI.reply("Uh oh! You forgot to include a description to search for! Try Again!");
-            return;
+            return "Uh oh! You forgot to include a description to search for! Try Again!\n";
         }
         
         ArrayList<Task> tasks = storage.searchTasksByDescription(input);
         
         if (tasks.isEmpty()) {
-            ChatterBoxUI.reply("There are no items in your list with that description.");
-            return;
+            return "There are no items in your list with that description.\n";
         }
         
-        ChatterBoxUI.reply("Here are the matching tasks in your list:");
+        String response = "Here are the matching tasks in your list:\n";
         
         for (int index = 1; index <= tasks.size(); ++index) {
-            System.out.println(index + "." + tasks.get(index - 1));
+            response += index + "." + tasks.get(index - 1) + '\n';
         }
-        System.out.println();
+        response += '\n';
+
+        return response;
     }
     
     /**
@@ -314,13 +343,18 @@ public class CommandProcessor {
      * 
      * @param storage Storage object in which Task objects are stored in.
      * @param task Task object that is to be stored in the storage object.
+     * @return Returns a string to be shown in response to user input
      */
-    private static void addTask(Storage<Task> storage, Task task) {
+    private static String addTask(Storage<Task> storage, Task task) {
+        String response = "";
+        
         storage.addItem(task);
         MemoryStorage.saveTask(task);
 
-        ChatterBoxUI.reply("Got it. I've added this task:");
-        System.out.println(task);
-        ChatterBoxUI.reply("You now have " + storage.size() + " tasks in the list.");
+        response += "Got it. I've added this task:\n";
+        response += task + "\n";
+        response += "You now have " + storage.size() + " tasks in the list.\n";
+
+        return response;
     }
 }
