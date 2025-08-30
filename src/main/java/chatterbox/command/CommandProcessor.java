@@ -12,6 +12,18 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Processes and executes user commands in the ChatterBox application.
+ * 
+ * <p>The {@code CommandProcessor} class maps user-entered command strings
+ * to specific actions, such as adding, marking, unmarking, deleting, and 
+ * searching tasks. Commands are validated and executed using the appropriate 
+ * {@link Runnable} implementation. All task modifications are reflected in 
+ * both memory and persistent storage.
+ * 
+ * <p>Common commands include {@code list}, {@code mark}, {@code unmark}, 
+ * {@code todo}, {@code deadline}, {@code event}, {@code delete}, and {@code find}.
+ */
 public class CommandProcessor {
     private static final HashMap<String, Runnable> commands = new HashMap<>();
 

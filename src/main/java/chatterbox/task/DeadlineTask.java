@@ -4,6 +4,15 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a deadline task in the ChatterBox application.
+ * 
+ * <p>A {@code DeadlineTask} is a specific type of {@link Task}
+ * that has a deadline. It uses the symbol 'D' to denote its type
+ * and inherits common task behavior such as completion status and
+ * description. The deadline is formatted to show LocalDateTime when
+ * printed.
+ */
 public class DeadlineTask extends Task {
     
     private static char symbol = 'D';

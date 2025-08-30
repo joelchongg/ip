@@ -3,6 +3,14 @@ package chatterbox.memory;
 import chatterbox.task.Task;
 import java.util.ArrayList;
 
+/**
+ * A generic storage container for {@link Task} objects in the ChatterBox application.
+ * 
+ * <p>The {@code Storage} class manages a collection of tasks, providing methods to
+ * add, remove, retrieve and display tasks. It also supports searching tasks by 
+ * their description. This class uses an {@link ArrayList} internally to store 
+ * the tasks and is generic over any subclass of {@link Task}.
+ */
 public class Storage<T extends Task> {
 
     private ArrayList<T> storage;

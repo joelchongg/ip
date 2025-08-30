@@ -1,5 +1,13 @@
 package chatterbox.task;
 
+/**
+ * Represents an event task in the ChatterBox application.
+ * 
+ * <p>An {@code EventTask} is a specific type of {@link Task} that
+ * has a start time and an end time. It uses the symbol 'E' to 
+ * denote its type and inherits common task behavior such as 
+ * completion status and description.
+ */
 public class EventTask extends Task {
     
     private static char symbol = 'E';

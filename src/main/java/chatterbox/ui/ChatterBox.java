@@ -6,6 +6,9 @@ import chatterbox.memory.Storage;
 import chatterbox.task.Task;
 import java.util.Scanner;
 
+/**
+ * Main entry point for the ChatterBox application.
+ */
 public class ChatterBox {
 
     private static Storage<Task> storage = new Storage<>();
@@ -38,10 +41,18 @@ public class ChatterBox {
         scanner.close();
     }
 
-    public static void initialize() {
+    private static void initialize() {
         MemoryStorage.loadTasks(storage);
     }
 
+    /**
+     * Starts the ChatterBox application.
+     * 
+     * This method initializes stored data, if any, displays a greeting message,
+     * enters the main input loop, and ends with a farewell.
+     * 
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         initialize();
         ChatterBoxUI.greet();

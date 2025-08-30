@@ -10,6 +10,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * Handles persistent storage of {@link Task} objects for the ChatterBox application.
+ * 
+ * <p>The {@code MemoryStorage} class provides methods to load tasks from disk into
+ * memory, save new tasks, update completion status, and delete tasks. It ensures data
+ * integrity by detecting corrupted files and creating temporary memory files if needed.
+ * All methods are static and operate on a shared file located at {@code ./data/tasks.txt}.
+ * 
+ * <p>Tasks are serialized in a simple text format and reconstructed into their corresponding
+ * {@link Task} subclasses when loaded.
+ */
 public class MemoryStorage {
     private static File taskFile = new File("./data/tasks.txt");    
 
