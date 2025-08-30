@@ -11,6 +11,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+/**
+ * Controller for the main GUI window of the ChatterBox application.
+ *
+ * <p> This class handles:
+ * <ul>
+ *  <li>displaying user and bot dialog messages</li>
+ *  <li>managing user input and sending it to {@code ChatterBox} backend</li>
+ *  <li>graceful application exit when user types {@code bye}</li>
+ * </ul>
+ * <p>
+ */
 public class MainWindow extends AnchorPane {
     @FXML
     private ScrollPane scrollPane;
@@ -26,6 +37,13 @@ public class MainWindow extends AnchorPane {
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
     private Image botImage = new Image(this.getClass().getResourceAsStream("/images/chatterbox.png"));
 
+    /**
+     * Initializes the main window.
+     *
+     * <p> Binds the scroll pane's vertical value to the height
+     * of the dialog container so that the latest messages
+     * are always visible.
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
@@ -37,13 +55,28 @@ public class MainWindow extends AnchorPane {
         chatterBox.initialize();
     }
 
+    /**
+     * Handles user input from the text field when the
+     * send button is pressed.
+     *
+     * <p> This method:
+     * <ul>
+     *  <li>retrieves the user input and appends a '\n' to mimic CLI input</li>
+     *  <li>queries {@code ChatterBox} for a response</li>
+     *  <li>and adds the bot's response to the container</li>
+     * </ul>
+     *
+     * If the user enters {@code bye}, a farewell message is displayed
+     * and the application exits after a 2 second delay.
+     * </p>
+     */
     @FXML
     private void handleUserInput() {
         String input = userInput.getText() + '\n';
 
         if (input.trim().equalsIgnoreCase("bye")) {
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
-            
+
             dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
                 DialogBox.getChatterBoxDialog("Good day! Closing in 2 seconds.", botImage)

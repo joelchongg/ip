@@ -1,14 +1,15 @@
 package chatterbox.memory;
 
-import chatterbox.task.Task;
 import java.util.ArrayList;
+
+import chatterbox.task.Task;
 
 /**
  * A generic storage container for {@link Task} objects in the ChatterBox application.
- * 
+ *
  * <p>The {@code Storage} class manages a collection of tasks, providing methods to
- * add, remove, retrieve and display tasks. It also supports searching tasks by 
- * their description. This class uses an {@link ArrayList} internally to store 
+ * add, remove, retrieve and display tasks. It also supports searching tasks by
+ * their description. This class uses an {@link ArrayList} internally to store
  * the tasks and is generic over any subclass of {@link Task}.
  */
 public class Storage<T extends Task> {
@@ -23,7 +24,7 @@ public class Storage<T extends Task> {
      * Outputs to the command line interface the items stored in a numbered list format.
      * Output is empty if storage is empty
      *
-     * @return Returns a string representing {@code Task} objects in {@code Storage} 
+     * @return Returns a string representing {@code Task} objects in {@code Storage}
      */
     public String displayItems() {
         String response = "";
@@ -37,13 +38,13 @@ public class Storage<T extends Task> {
 
     /**
      * Returns an ArrayList of Tasks for which each Task contains the given description
-     * 
-     * @param desc String used to search the description for.
-     * @return ArrayList<Task>
+     *
+     * @param desc String used to search the description for
+     * @return {@code ArrayList<Task>}
      */
     public ArrayList<Task> searchTasksByDescription(String desc) {
         ArrayList<Task> result = new ArrayList<>();
-        
+
         for (Task task : storage) {
             String description = task.getTaskDescription();
 

@@ -1,8 +1,7 @@
 package chatterbox;
 
-import javafx.application.Application;
-
 import chatterbox.ui.Main;
+import javafx.application.Application;
 
 /**
  * A Launcher class to workaround classpath issues.

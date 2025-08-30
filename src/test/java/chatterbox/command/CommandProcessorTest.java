@@ -1,15 +1,16 @@
 package chatterbox.command;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Scanner;
+
+import org.junit.jupiter.api.Test;
+
 import chatterbox.memory.Storage;
 import chatterbox.task.Task;
 import chatterbox.task.TodoTask;
-
-import java.util.Scanner;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommandProcessorTest {
     @Test
@@ -17,7 +18,7 @@ public class CommandProcessorTest {
         assertTrue(CommandProcessor.isCommand("todo"));
     }
 
-    @Test 
+    @Test
     public void isNotCommand_foobar_returnFalse() {
         assertFalse(CommandProcessor.isCommand("foobar"));
     }
@@ -45,7 +46,7 @@ public class CommandProcessorTest {
         Scanner scanner = new Scanner("\n");
 
         String response = CommandProcessor.processCommand(storage, scanner, "todo");
-        
+
         assertEquals(0, storage.size());
         assertEquals("Uh oh! You forgot to include a description for your todo task! Try again!",
                 response.trim());
@@ -57,7 +58,7 @@ public class CommandProcessorTest {
         Scanner scanner = new Scanner("\n");
 
         String response = CommandProcessor.processCommand(storage, scanner, "foobar");
-        
+
         assertEquals("Invalid Command!", response.trim());
     }
 }

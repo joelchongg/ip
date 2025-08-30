@@ -1,10 +1,5 @@
 package chatterbox.command;
 
-import chatterbox.exception.ChatterBoxException;
-import chatterbox.memory.Storage;
-import chatterbox.memory.MemoryStorage;
-import chatterbox.task.*;
-
 import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,16 +7,24 @@ import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import chatterbox.exception.ChatterBoxException;
+import chatterbox.memory.MemoryStorage;
+import chatterbox.memory.Storage;
+import chatterbox.task.DeadlineTask;
+import chatterbox.task.EventTask;
+import chatterbox.task.Task;
+import chatterbox.task.TodoTask;
+
 /**
  * Processes and executes user commands in the ChatterBox application.
- * 
+ *
  * <p>The {@code CommandProcessor} class maps user-entered command strings
- * to specific actions, such as adding, marking, unmarking, deleting, and 
- * searching tasks. Commands are validated and executed using the appropriate 
- * {@link Runnable} implementation. All task modifications are reflected in 
+ * to specific actions, such as adding, marking, unmarking, deleting, and
+ * searching tasks. Commands are validated and executed using the appropriate
+ * {@link Runnable} implementation. All task modifications are reflected in
  * both memory and persistent storage.
- * 
- * <p>Common commands include {@code list}, {@code mark}, {@code unmark}, 
+ *
+ * <p>Common commands include {@code list}, {@code mark}, {@code unmark},
  * {@code todo}, {@code deadline}, {@code event}, {@code delete}, and {@code find}.
  */
 public class CommandProcessor {
@@ -41,7 +44,7 @@ public class CommandProcessor {
     /**
      * Processes the command given in the parameter.
      * If the command is invalid, no changes are made and "Invalid Command" is seen in output.
-     * 
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @param command Command to be processed.
@@ -59,7 +62,7 @@ public class CommandProcessor {
 
     /**
      * Returns a boolean depending if command is valid.
-     * 
+     *
      * @param command String for a command.
      * @return boolean indicating whether the given input is a command
      */
@@ -70,7 +73,7 @@ public class CommandProcessor {
     /**
      * Outputs to command line interface tasks in the storage in a numbered list.
      * If storage is empty, no output is produced.
-     * 
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @return Returns a string to be shown in response to user input
@@ -83,11 +86,11 @@ public class CommandProcessor {
     }
 
     /**
-     * Takes in input from command line interface and 
+     * Takes in input from command line interface and
      * marks the task at the corresponding index from input.
      * Subsequent input should be an integer denoting the index of the task
      * in the storage object.
-     * 
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @return Returns a string to be shown in response to user input
@@ -120,7 +123,7 @@ public class CommandProcessor {
      * marks the task at the corresponding index from input.
      * Subsequent input should be an integer denoting the index of the task
      * in the storage object.
-     * 
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @return Returns a string to be shown in response to user input
@@ -151,8 +154,8 @@ public class CommandProcessor {
     /**
      * Creates and adds a todo Task object into the storage.
      * Description for the task object should be inputted after the 'todo' command.
-     * Input Format: todo <description>
-     * 
+     * <p>Input Format: {@code todo <description>}
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @return Returns a string to be shown in response to user input
@@ -181,49 +184,49 @@ public class CommandProcessor {
     /**
      * Creates and adds a deadline Task object into the storage.
      * Description for the task object should be inputted after the 'deadline' command.
-     * Input Format: deadline <description> /by <LocalDateTime>
+     * <p>Input Format: {@code deadline <description> /by <LocalDateTime>}
      * LocalDateTime format should follow: dd-mm-yyyy HH:mm
-     * 
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @return Returns a string to be shown in response to user input
      */
     private static String addDeadline(Storage<Task> storage, Scanner scanner) {
         String response = "";
-        
+
         try {
             String input = scanner.nextLine().trim();
-            
+
             if (input.isEmpty()) {
                 throw new ChatterBoxException(
                     "Uh oh! You forgot to include a description for your deadline task! Try again!"
                 );
             }
-            
+
             String[] tokens = parseInput(input, " /by ");
-            
+
             if (tokens.length != 2) {
                 throw new ChatterBoxException(
                     "Uh oh! You did not input your deadline task correctly! Try: deadline <description> /by <deadline>"
                 );
             }
-    
+
             Task newTask = new DeadlineTask(tokens[0], tokens[1]);
             response = addTask(storage, newTask);
         } catch (ChatterBoxException e) {
             response = e.getMessage() + '\n';
-        } catch(DateTimeException e) {
-            response ="Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!\n";
+        } catch (DateTimeException e) {
+            response = "Oops! Your deadline format is incorrect! It should be \"dd-mm-yyyy HH:mm\". Try Again!\n";
         }
 
         return response;
     }
-    
+
     /**
      * Creates and adds a event Task object into the storage.
      * Description for the task object should be inputted after the 'event' command.
-     * Input Format: event <description> from: <time> to: <time>
-     * 
+     * <p>Input Format: {@code event <description> from: <time> to: <time>}
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @return Returns a string to be shown in response to user input
@@ -235,14 +238,17 @@ public class CommandProcessor {
             String input = scanner.nextLine().trim();
 
             if (input.isEmpty()) {
-                throw new ChatterBoxException("Uh oh! You forgot to include a description for your event task! Try again!");
+                throw new ChatterBoxException(
+                    "Uh oh! You forgot to include a description for your event task! Try again!"
+                );
             }
 
             String[] tokens = parseInput(input, " /from ", " /to ");
 
             if (tokens.length != 3) {
                 throw new ChatterBoxException(
-                    "Uh oh! You did not input your event task correctly! Try: event <description> /from <time> /to <time>"
+                    "Uh oh! You did not input your event task correctly!"
+                    + "Try: event <description> /from <time> /to <time>"
                 );
             }
 
@@ -258,15 +264,15 @@ public class CommandProcessor {
     /**
      * Deletes a task from the storage
      * The task deleted corresponds to the index inputted after the 'delete' command.
-     * Input Format: delete <index>
-     * 
+     * <p>Input Format: {@code delete <index>}
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from command line interface.
      * @return Returns a string to be shown in response to user input
      */
     private static String delete(Storage<Task> storage, Scanner scanner) {
         String response = "";
-        
+
         try {
             int index = scanner.nextInt();
             Task deleted = storage.removeItem(index - 1);
@@ -289,27 +295,27 @@ public class CommandProcessor {
     /**
      * Finds tasks that contain a specific description and outputs it into the command line interface.
      * Description to search for should be inputted after the 'find' command.
-     * Format: find <description>
-     * 
+     * <p> Input Format: {@code find <description>}
+     *
      * @param storage Storage object in which Task objects are stored.
      * @param scanner Scanner used to read input from the command line interface.
      * @return Returns a string to be shown in response to user input
      */
     private static String find(Storage<Task> storage, Scanner scanner) {
         String input = scanner.nextLine().trim();
-        
+
         if (input.isEmpty()) {
             return "Uh oh! You forgot to include a description to search for! Try Again!\n";
         }
-        
+
         ArrayList<Task> tasks = storage.searchTasksByDescription(input);
-        
+
         if (tasks.isEmpty()) {
             return "There are no items in your list with that description.\n";
         }
-        
+
         String response = "Here are the matching tasks in your list:\n";
-        
+
         for (int index = 1; index <= tasks.size(); ++index) {
             response += index + "." + tasks.get(index - 1) + '\n';
         }
@@ -317,15 +323,15 @@ public class CommandProcessor {
 
         return response;
     }
-    
+
     /**
      * Returns a String[] that contains the parsed input based on the delimiters given.
      * Multiple delimiters can be used to parse an input.
-     * 
-     * @param input String to be parsed.
-     * @param delimiters One or more delimiters to be used to parse the input.
-     * @return String[] containing the tokens of the input.
-     * @throws ChatterBoxException If delimiter does not exist within the input string.
+     *
+     * @param input String to be parsed
+     * @param delimiters One or more delimiters to be used to parse the input
+     * @return String[] containing the tokens of the input
+     * @throws ChatterBoxException If delimiter does not exist within the input string
      */
     private static String[] parseInput(String input, String... delimiters) throws ChatterBoxException {
         String[] parts = new String[delimiters.length + 1];
@@ -346,14 +352,14 @@ public class CommandProcessor {
 
     /**
      * Adds the given task into the storage object.
-     * 
+     *
      * @param storage Storage object in which Task objects are stored in.
      * @param task Task object that is to be stored in the storage object.
      * @return Returns a string to be shown in response to user input
      */
     private static String addTask(Storage<Task> storage, Task task) {
         String response = "";
-        
+
         storage.addItem(task);
         MemoryStorage.saveTask(task);
 
