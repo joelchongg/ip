@@ -67,6 +67,22 @@ public abstract class Task {
     }
 
     @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+
+        if (!(other instanceof Task)) {
+            return false;
+        }
+
+        Task otherTask = (Task) other;
+        
+        return this.description.equals(otherTask.description)
+                && this.symbol == otherTask.symbol;
+    }
+
+    @Override
     public String toString() {
         String status = "[" + getTaskSymbol() + "] [" + getStatusIcon() + "]";
         return status + " " + this.description;
