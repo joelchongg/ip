@@ -46,6 +46,8 @@ public class ChatterBox {
      * Initializes {@code Task} objects from memory to virtual memory.
      */
     public void initialize() {
+        assert storage != null : "Storage should not be null";
+
         MemoryStorage.loadTasks(storage);
     }
 

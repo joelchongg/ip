@@ -39,6 +39,8 @@ public class CommandProcessor {
         commands.put("event", CommandProcessor::addEvent);
         commands.put("delete", CommandProcessor::delete);
         commands.put("find", CommandProcessor::find);
+
+        assert !commands.isEmpty() : "Command map should not be empty";
     }
 
     /**
@@ -51,6 +53,9 @@ public class CommandProcessor {
      * @return Returns a string to be shown in response to user input
      */
     public static String processCommand(Storage<Task> storage, Scanner scanner, String command) {
+        assert storage != null : "Storage must not be null";
+        assert scanner != null : "Scanner must not be null";
+
         if (isCommand(command)) {
             Runnable cmd = commands.get(command);
             String response = cmd.run(storage, scanner);
