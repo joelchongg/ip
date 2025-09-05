@@ -45,6 +45,8 @@ public class MemoryStorage {
      * @param storage Storage object in which Task objects are stored in
      */
     public static void loadTasks(Storage<Task> storage) {
+        assert storage != null : "Storage must not be null";
+
         File tempFile = new File("./data/tasks_tmp.txt");
         boolean isCorruptedFile = false;
 
