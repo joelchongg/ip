@@ -22,6 +22,8 @@ public abstract class Task {
      * @param symbol the character representing the task type.
      */
     public Task(String description, char symbol) {
+        assert symbol == 'T' || symbol == 'D' || symbol == 'E' : "Invalid task symbol";
+
         this.description = description;
         this.isCompleted = false;
         this.symbol = symbol;
