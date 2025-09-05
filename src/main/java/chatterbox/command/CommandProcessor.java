@@ -51,13 +51,14 @@ public class CommandProcessor {
      * @return Returns a string to be shown in response to user input
      */
     public static String processCommand(Storage<Task> storage, Scanner scanner, String command) {
-        if (isCommand(command)) {
-            Runnable cmd = commands.get(command);
-            String response = cmd.run(storage, scanner);
-            return response;
-        } else {
+        if (!isCommand(command)) {
             return "Invalid Command!";
         }
+
+        Runnable cmd = commands.get(command);
+        String response = cmd.run(storage, scanner);
+
+        return response;
     }
 
     /**
