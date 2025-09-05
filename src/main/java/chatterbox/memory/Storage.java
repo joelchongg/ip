@@ -56,6 +56,10 @@ public class Storage<T extends Task> {
         return result;
     }
 
+    public boolean hasDuplicateTask(Task newTask) {
+        return storage.stream().anyMatch(task -> task.equals(newTask));
+    }
+
     public boolean addItem(T item) {
         return this.storage.add(item);
     }

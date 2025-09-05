@@ -366,6 +366,11 @@ public class CommandProcessor {
     private static String addTask(Storage<Task> storage, Task task) {
         String response = "";
 
+        if (storage.hasDuplicateTask(task)) {
+            response = "You have already added this task!";
+            return response;
+        }
+
         storage.addItem(task);
         MemoryStorage.saveTask(task);
 
