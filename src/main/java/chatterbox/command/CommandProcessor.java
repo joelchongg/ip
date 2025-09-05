@@ -55,14 +55,15 @@ public class CommandProcessor {
     public static String processCommand(Storage<Task> storage, Scanner scanner, String command) {
         assert storage != null : "Storage must not be null";
         assert scanner != null : "Scanner must not be null";
-
-        if (isCommand(command)) {
-            Runnable cmd = commands.get(command);
-            String response = cmd.run(storage, scanner);
-            return response;
-        } else {
+        
+        if (!isCommand(command)) {
             return "Invalid Command!";
         }
+
+        Runnable cmd = commands.get(command);
+        String response = cmd.run(storage, scanner);
+
+        return response;
     }
 
     /**
