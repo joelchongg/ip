@@ -61,4 +61,84 @@ public class CommandProcessorTest {
 
         assertEquals("Invalid Command!", response.trim());
     }
+
+    @Test
+    public void processCommand_emptyMarkIndex_displayErrorMessage() {
+        Storage<Task> storage = new Storage<>();
+        Scanner scanner = new Scanner("\n");
+
+        String response = CommandProcessor.processCommand(storage, scanner, "mark");
+
+        assertEquals("Uh oh! You forgot to input an index! Try: mark <index>",
+                response.trim());
+    }
+
+    @Test
+    public void processCommand_emptyUnmarkIndex_displayErrorMessage() {
+        Storage<Task> storage = new Storage<>();
+        Scanner scanner = new Scanner("\n");
+
+        String response = CommandProcessor.processCommand(storage, scanner, "unmark");
+
+        assertEquals("Uh oh! You forgot to input an index! Try: unmark <index>",
+                response.trim());
+    }
+
+    @Test
+    public void processCommand_emptyDeadlineDescription_displayErrorMessage() {
+        Storage<Task> storage = new Storage<>();
+        Scanner scanner = new Scanner("\n");
+
+        String response = CommandProcessor.processCommand(storage, scanner, "deadline");
+
+        assertEquals("Uh oh! You forgot to include a description for your deadline task! Try again!",
+                response.trim());
+    }
+
+    @Test
+    public void processCommand_emptyEventDescription_displayErrorMessage() {
+        Storage<Task> storage = new Storage<>();
+        Scanner scanner = new Scanner("\n");
+
+        String response = CommandProcessor.processCommand(storage, scanner, "event");
+
+        assertEquals("Uh oh! You forgot to include a description for your event task! Try again!",
+                response.trim());
+    }
+
+    @Test
+    public void processCommand_emptyDeleteIndex_displayErrorMessage() {
+        Storage<Task> storage = new Storage<>();
+        Scanner scanner = new Scanner("\n");
+
+        String response = CommandProcessor.processCommand(storage, scanner, "delete");
+
+        assertEquals("Uh oh! You forgot to input an index! Try: delete <index>",
+                response.trim());
+    }
+
+    @Test
+    public void processCommand_emptyFindDescription_displayErrorMessage() {
+        Storage<Task> storage = new Storage<>();
+        Scanner scanner = new Scanner("\n");
+
+        String response = CommandProcessor.processCommand(storage, scanner, "find");
+
+        assertEquals("Uh oh! You forgot to include a description to search for! Try Again!",
+                response.trim());
+    }
+
+    @Test
+    public void processCommand_addDuplicateTask_displayErrorMessage() {
+        Storage<Task> storage = new Storage<>();
+        Scanner scanner = new Scanner("task\n");
+
+        storage.addItem(new TodoTask("task"));
+
+        String response = CommandProcessor.processCommand(storage, scanner, "todo");
+
+        assertEquals("You have already added this task!",
+                response.trim());
+        assertTrue(storage.size() == 1);
+    }
 }
