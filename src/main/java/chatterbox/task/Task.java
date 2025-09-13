@@ -77,7 +77,7 @@ public abstract class Task {
         }
 
         Task otherTask = (Task) other;
-        
+
         return this.description.equals(otherTask.description)
                 && this.symbol == otherTask.symbol;
     }

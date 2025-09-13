@@ -4,7 +4,7 @@ package chatterbox.ui;
  * Provides console-based interaction for the ChatterBox application.
  */
 public class ChatterBoxUI {
-    private static String BOT_NAME = "\nChatterBox: ";
+    private static final String BOT_NAME = "\nChatterBox: ";
 
     /**
      * Prints a greeting message to the user.
