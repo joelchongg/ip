@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 /**
@@ -47,6 +48,12 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        sendButton.setFont(Font.font("Verdana"));
+        userInput.setFont(Font.font("Verdana"));
+        String greeting = "Welcome! I'm ChatterBox.\nWhat can I do for you?";
+        dialogContainer.getChildren().add(
+                DialogBox.getChatterBoxDialog(greeting, botImage)
+        );
     }
 
     /** Injects the Duke instance */
@@ -72,9 +79,9 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
-        String input = userInput.getText() + '\n';
+        String input = userInput.getText().toLowerCase().trim() + '\n';
 
-        if (input.trim().equalsIgnoreCase("bye")) {
+        if (input.equalsIgnoreCase("bye")) {
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
 
             dialogContainer.getChildren().addAll(
