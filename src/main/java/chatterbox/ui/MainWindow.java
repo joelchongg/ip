@@ -80,29 +80,37 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
-        String input = userInput.getText().toLowerCase().trim() + '\n';
+        try {
+            String input = userInput.getText() + '\n';
 
-        if (input.equalsIgnoreCase("bye")) {
-            PauseTransition delay = new PauseTransition(Duration.seconds(2));
+            if (input.trim().equalsIgnoreCase("bye")) {
+                PauseTransition delay = new PauseTransition(Duration.seconds(2));
+
+                dialogContainer.getChildren().addAll(
+                    DialogBox.getUserDialog(input, userImage),
+                    DialogBox.getChatterBoxDialog("Good day! Closing in 2 seconds.", botImage)
+                );
+
+                delay.setOnFinished(event -> Platform.exit());
+                delay.play();
+
+                return;
+            }
+
+            String response = chatterBox.run(input);
 
             dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getChatterBoxDialog("Good day! Closing in 2 seconds.", botImage)
+                DialogBox.getChatterBoxDialog(response, botImage)
             );
 
-            delay.setOnFinished(event -> Platform.exit());
-            delay.play();
-
-            return;
+            userInput.clear();
+        } catch (Exception e) {
+            dialogContainer.getChildren().addAll(
+                DialogBox.getChatterBoxDialog(
+                        "Unexpected error occured, try a different command.",
+                        botImage)
+            );
         }
-
-        String response = chatterBox.run(input);
-
-        dialogContainer.getChildren().addAll(
-            DialogBox.getUserDialog(input, userImage),
-            DialogBox.getChatterBoxDialog(response, botImage)
-        );
-
-        userInput.clear();
     }
 }

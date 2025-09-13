@@ -1,3 +1,8 @@
+/*
+* CSS was inspired by jereeemyyyy from AY24/25 CS2103T, and was put into Co-Pilot
+* in order to generate similar CSS. Surprisingly, it gave the CSS that was identical.
+*/
+
 .label {
     -fx-background-color: linear-gradient(to bottom right, #00ffbf, #00ddff);
     -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
